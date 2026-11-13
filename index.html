@@ -1,13 +1,6 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-
-<head>
+<!DOCTYPE html><html lang="pt-BR"><head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>Nosso Mundo Colorido ✨</title>
-
-  <style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">  <title>Nosso Mundo Colorido ✨</title>  <style>
     * {
       margin: 0;
       padding: 0;
@@ -38,6 +31,7 @@
       pointer-events: none;
     }
 
+    /* Área onde o livro fica */
     .palco {
       position: relative;
       width: 100%;
@@ -49,12 +43,14 @@
       perspective: 1800px;
     }
 
+    /* Livro */
     .livro {
       position: relative;
       width: min(96vw, 520px);
       filter: drop-shadow(0 35px 30px rgba(0, 0, 0, 0.55));
     }
 
+    /* Capa */
     .capa {
       position: relative;
       width: 100%;
@@ -62,15 +58,14 @@
       border-radius: 0 18px 18px 0;
       overflow: hidden;
       background: #111;
+      transform-origin: left center;
 
       box-shadow:
         inset 0px 15px rgba(0, 0, 0, 0.35),
         inset -3px 0 8px rgba(255, 255, 255, 0.12);
-
-      transform-origin: left center;
     }
 
-    /* A IMAGEM AGORA APARECE COMPLETA */
+    /* Mostra a imagem completa */
     .capa img {
       width: 100%;
       height: auto;
@@ -121,6 +116,7 @@
       pointer-events: none;
     }
 
+    /* Ajustes exclusivos para celular */
     @media (max-width: 600px) {
 
       .palco {
@@ -132,29 +128,17 @@
       }
 
     }
+  </style></head><body>  <div class="cenario"></div>  <main class="palco"><section class="livro">
 
-  </style>
-</head>
+  <div class="capa">
 
-<body>
+    <img
+      src="Capa livro♡.png"
+      alt="Capa do livro Nosso Mundo Colorido">
 
-  <div class="cenario"></div>
+  </div>
 
-  <main class="palco">
+</section>
 
-    <section class="livro">
-
-      <div class="capa">
-
-        <img
-          src="Capa.livro.png"
-          alt="Capa do livro Nosso Mundo Colorido">
-
-      </div>
-
-    </section>
-
-  </main>
-
-</body>
+  </main></body>
 </html>
