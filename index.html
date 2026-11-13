@@ -1,10 +1,16 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
   <title>Nosso Mundo Colorido ✨</title>
+
 
   <style>
 
@@ -14,74 +20,117 @@
       box-sizing: border-box;
     }
 
+
     body {
       min-height: 100vh;
+
       font-family: Georgia, serif;
+
       background:
-        radial-gradient(circle at top, #27345F 0%, #11182C 45%, #070912 100%);
+        radial-gradient(
+          circle at top,
+          #27345F 0%,
+          #11182C 45%,
+          #070912 100%
+        );
+
       overflow: hidden;
     }
 
-    /* Fundo estrelado */
+
+    /* FUNDO ESTRELADO */
+
     .cenario {
       position: fixed;
       inset: 0;
+
       background-image:
         radial-gradient(white 1px, transparent 1px),
-        radial-gradient(white 1px, transparent 1px),
-        radial-gradient(#b9cfff 1px, transparent 1px);
+        radial-gradient(white 1px, transparent 1px);
 
-      background-size: 50px 50px, 90px 90px, 140px 140px;
-      background-position: 0 0, 25px 35px, 70px 15px;
+      background-size:
+        50px 50px,
+        90px 90px;
 
-      opacity: 0.28;
+      background-position:
+        0 0,
+        25px 35px;
+
+      opacity: 0.25;
+
       pointer-events: none;
     }
 
-    /* Palco */
+
+    /* PALCO */
+
     .palco {
       position: relative;
+
       width: 100%;
       min-height: 100vh;
 
       display: flex;
       flex-direction: column;
+
       justify-content: center;
       align-items: center;
 
       padding: 20px;
+
       perspective: 1800px;
     }
 
-    /* Área do livro */
+
+    /* ÁREA DO LIVRO */
+
     .area-3d {
-      width: min(76vw, 440px);
+      position: relative;
+
+      width: min(76vw, 54vh);
+
       aspect-ratio: 2 / 3;
 
-      position: relative;
       display: flex;
+
       justify-content: center;
       align-items: center;
+
+      perspective: 1800px;
     }
 
-    /* Livro inteiro */
+
+    /* LIVRO */
+
     .livro-3d {
+      --profundidade: 28px;
+      --metade-profundidade: 14px;
+      --metade-largura: 150px;
+
       position: relative;
+
       width: 100%;
       height: 100%;
 
       transform-style: preserve-3d;
+
       transform: rotateY(0deg);
 
-      filter:
-        drop-shadow(0 30px 25px rgba(0, 0, 0, 0.55));
-
       will-change: transform;
+
+      filter:
+        drop-shadow(
+          0 30px 25px
+          rgba(0, 0, 0, 0.55)
+        );
     }
 
-    /* Estilo geral das faces */
+
+    /* FACES PRINCIPAIS */
+
     .face {
       position: absolute;
+
       top: 0;
       left: 0;
 
@@ -91,118 +140,188 @@
       overflow: hidden;
 
       backface-visibility: hidden;
+
+      transform-style: preserve-3d;
     }
+
 
     .face img {
       width: 100%;
       height: 100%;
+
       display: block;
+
       object-fit: fill;
 
       pointer-events: none;
       user-select: none;
     }
 
-    /* Profundidade do livro */
+
+    /* =========================
+       CAPA - FRENTE
+       ========================= */
+
     .capa {
-      transform: translateZ(18px);
-      border-radius: 0 18px 18px 0;
-    }
-
-    .contracapa {
-      transform: rotateY(180deg) translateZ(18px);
-      border-radius: 18px 0 0 18px;
-    }
-
-    /* LOMBADA */
-    .lombada {
-      position: absolute;
-
-      width: 36px;
-      height: 100%;
-
-      top: 0;
-      left: 0;
-
       transform:
-        rotateY(-90deg)
-        translateZ(18px);
+        translateZ(
+          var(--metade-profundidade)
+        );
 
-      transform-origin: left center;
+      border-radius:
+        0 12px 12px 0;
 
       overflow: hidden;
     }
 
+
+    /* =========================
+       CONTRACAPA - TRÁS
+       ========================= */
+
+    .contracapa {
+      transform:
+        rotateY(180deg)
+        translateZ(
+          var(--metade-profundidade)
+        );
+
+      border-radius:
+        12px 0 0 12px;
+
+      overflow: hidden;
+    }
+
+
+    /* =========================
+       LOMBADA - ESQUERDA
+       ========================= */
+
+    .lombada {
+      position: absolute;
+
+      top: 0;
+      left: 0;
+
+      width:
+        var(--profundidade);
+
+      height: 100%;
+
+      overflow: hidden;
+
+      transform-origin:
+        left center;
+
+      transform:
+        rotateY(-90deg)
+        translateZ(
+          var(--metade-largura)
+        );
+
+      backface-visibility: visible;
+    }
+
+
     .lombada img {
       width: 100%;
       height: 100%;
+
       display: block;
+
       object-fit: fill;
 
       pointer-events: none;
       user-select: none;
     }
 
-    /* LATERAL DAS PÁGINAS */
+
+    /* =========================
+       LATERAL DAS PÁGINAS
+       ========================= */
+
     .paginas {
       position: absolute;
-
-      width: 36px;
-      height: calc(100% - 12px);
 
       top: 6px;
       right: 0;
 
-      background:
-        linear-gradient(
-          to right,
-          #9b9078,
-          #f2ead8,
-          #c9bda5
-        );
+      width:
+        var(--profundidade);
+
+      height:
+        calc(100% - 12px);
+
+      transform-origin:
+        right center;
 
       transform:
         rotateY(90deg)
-        translateZ(18px);
+        translateZ(
+          var(--metade-largura)
+        );
 
-      transform-origin: right center;
+      background:
+        repeating-linear-gradient(
+          to bottom,
+          #e8dfca 0px,
+          #e8dfca 2px,
+          #c9bea8 3px,
+          #f4ecd9 4px
+        );
 
       box-shadow:
-        inset 2px 0 3px rgba(0, 0, 0, 0.25),
-        inset -2px 0 3px rgba(255, 255, 255, 0.4);
+        inset 2px 0 4px
+        rgba(0, 0, 0, 0.25);
     }
 
-    /* Controle */
+
+    /* CONTROLE */
+
     .controle-area {
-      width: min(70vw, 330px);
+      width:
+        min(68vw, 300px);
+
       margin-top: 28px;
 
       display: flex;
       flex-direction: column;
+
       align-items: center;
     }
 
+
     .controle-texto {
-      color: rgba(220, 230, 255, 0.6);
-      font-size: 11px;
+      color:
+        rgba(220, 230, 255, 0.55);
+
+      font-size: 10px;
+
       letter-spacing: 1.2px;
-      margin-bottom: 10px;
+
+      margin-bottom: 8px;
     }
 
-    /* Constelação */
+
+    /* CONSTELAÇÃO */
+
     .constelacao {
       position: relative;
+
       width: 100%;
-      height: 44px;
+      height: 42px;
 
       touch-action: none;
       user-select: none;
     }
 
+
     .linha {
       position: absolute;
+
       left: 0;
       right: 0;
+
       top: 50%;
 
       height: 1px;
@@ -211,161 +330,258 @@
         linear-gradient(
           90deg,
           transparent,
-          rgba(180, 205, 255, 0.65),
-          rgba(255, 255, 255, 0.85),
-          rgba(180, 205, 255, 0.65),
+          rgba(180, 205, 255, 0.6),
+          rgba(255, 255, 255, 0.9),
+          rgba(180, 205, 255, 0.6),
           transparent
         );
     }
 
+
     .pontinho {
       position: absolute;
-      color: rgba(220, 235, 255, 0.75);
+
+      color:
+        rgba(220, 235, 255, 0.7);
+
       font-size: 10px;
+
       pointer-events: none;
     }
 
-    .ponto-1 { left: 8%; top: 7px; }
-    .ponto-2 { left: 25%; bottom: 5px; }
-    .ponto-3 { right: 25%; top: 4px; }
-    .ponto-4 { right: 8%; bottom: 7px; }
 
-    /* Estrela arrastável */
+    .ponto-1 {
+      left: 8%;
+      top: 5px;
+    }
+
+
+    .ponto-2 {
+      left: 25%;
+      bottom: 3px;
+    }
+
+
+    .ponto-3 {
+      right: 25%;
+      top: 3px;
+    }
+
+
+    .ponto-4 {
+      right: 8%;
+      bottom: 5px;
+    }
+
+
+    /* ESTRELA */
+
     .estrela-controle {
       position: absolute;
+
       left: 50%;
       top: 50%;
-
-      transform: translate(-50%, -50%);
 
       width: 42px;
       height: 42px;
 
       display: flex;
+
       justify-content: center;
       align-items: center;
 
-      font-size: 26px;
+      transform:
+        translate(-50%, -50%);
+
+      font-size: 25px;
+
       color: white;
 
       cursor: grab;
-      z-index: 5;
+
+      z-index: 10;
 
       touch-action: none;
 
       text-shadow:
-        0 0 8px rgba(180, 210, 255, 0.9),
-        0 0 18px rgba(150, 190, 255, 0.7);
+        0 0 8px
+        rgba(180, 210, 255, 0.9),
+
+        0 0 18px
+        rgba(150, 190, 255, 0.7);
     }
+
 
     .estrela-controle.arrastando {
       cursor: grabbing;
-      transform: translate(-50%, -50%) scale(1.12);
+
+      transform:
+        translate(-50%, -50%)
+        scale(1.12);
     }
 
-    /* Transição */
-    .livro-3d.suave {
-      transition: transform 0.8s ease-in-out;
-    }
 
-    /* Celular */
+    /* CELULAR */
+
     @media (max-width: 600px) {
 
       .palco {
         padding: 18px;
       }
 
+
       .area-3d {
-        width: min(76vw, 54vh);
+        width:
+          min(76vw, 54vh);
       }
 
+
       .controle-area {
-        width: min(68vw, 300px);
+        width:
+          min(68vw, 300px);
+
         margin-top: 22px;
       }
 
     }
 
   </style>
+
 </head>
+
 
 <body>
 
+
+  <!-- FUNDO -->
+
   <div class="cenario"></div>
+
+
+  <!-- PALCO -->
 
   <main class="palco">
 
+
+    <!-- ÁREA 3D -->
+
     <div class="area-3d">
 
-      <div class="livro-3d suave" id="livro3d">
+
+      <!-- LIVRO -->
+
+      <div
+        class="livro-3d"
+        id="livro3d"
+      >
+
 
         <!-- CAPA -->
+
         <div class="face capa">
+
           <img
             src="Capa.livro.png"
-            alt="Capa do livro">
+            alt="Capa do livro Nosso Mundo Colorido"
+          >
+
         </div>
+
 
         <!-- CONTRACAPA -->
+
         <div class="face contracapa">
+
           <img
             src="file_00000000a9f0820e8a775aa484273482.png"
-            alt="Contracapa do livro">
+            alt="Contracapa do livro"
+          >
+
         </div>
+
 
         <!-- LOMBADA -->
+
         <div class="lombada">
+
           <img
             src="file_00000000234c820eb65e5bcf2cbd6e66.png"
-            alt="Lombada do livro">
+            alt="Lombada do livro"
+          >
+
         </div>
 
-        <!-- PÁGINAS -->
+
+        <!-- LATERAL DAS PÁGINAS -->
+
         <div class="paginas"></div>
+
 
       </div>
 
     </div>
 
 
-    <!-- CONTROLE DA CONSTELAÇÃO -->
+    <!-- CONTROLE -->
 
     <div class="controle-area">
 
+
       <div class="controle-texto">
+
         ARRASTE A ESTRELA PARA EXPLORAR
+
       </div>
 
-      <div class="constelacao" id="constelacao">
+
+      <div
+        class="constelacao"
+        id="constelacao"
+      >
+
 
         <div class="linha"></div>
 
+
         <span class="pontinho ponto-1">✦</span>
+
         <span class="pontinho ponto-2">✧</span>
+
         <span class="pontinho ponto-3">✦</span>
+
         <span class="pontinho ponto-4">✧</span>
+
+
+        <!-- ESTRELA ARRASTÁVEL -->
 
         <div
           class="estrela-controle"
           id="estrelaControle"
         >
+
           ✦
+
         </div>
+
 
       </div>
 
     </div>
+
 
   </main>
 
 
   <script>
 
+
     const livro3d =
       document.getElementById("livro3d");
 
+
     const constelacao =
       document.getElementById("constelacao");
+
 
     const estrelaControle =
       document.getElementById("estrelaControle");
@@ -374,24 +590,59 @@
     let arrastando = false;
 
 
+    /* CALCULA A METADE DA LARGURA REAL */
+
+    function atualizarTamanhoLivro() {
+
+      const largura =
+        livro3d.offsetWidth;
+
+
+      livro3d.style.setProperty(
+        "--metade-largura",
+        `${largura / 2}px`
+      );
+
+    }
+
+
+    atualizarTamanhoLivro();
+
+
+    window.addEventListener(
+      "resize",
+      atualizarTamanhoLivro
+    );
+
+
+    /* COMEÇA A ARRASTAR */
+
     estrelaControle.addEventListener(
       "pointerdown",
+
       function (e) {
 
         arrastando = true;
 
-        livro3d.classList.remove("suave");
+        estrelaControle.classList.add(
+          "arrastando"
+        );
 
-        estrelaControle.classList.add("arrastando");
 
-        estrelaControle.setPointerCapture(e.pointerId);
+        estrelaControle.setPointerCapture(
+          e.pointerId
+        );
 
       }
+
     );
 
 
+    /* MOVIMENTO */
+
     estrelaControle.addEventListener(
       "pointermove",
+
       function (e) {
 
         if (!arrastando) return;
@@ -408,7 +659,10 @@
         x =
           Math.max(
             0,
-            Math.min(rect.width, x)
+            Math.min(
+              rect.width,
+              x
+            )
           );
 
 
@@ -416,13 +670,13 @@
           x / rect.width;
 
 
-        /* Move a estrela */
+        /* MOVE A ESTRELA */
 
         estrelaControle.style.left =
           `${porcentagem * 100}%`;
 
 
-        /* Gira o livro */
+        /* GIRA O LIVRO */
 
         const angulo =
           porcentagem * 360;
@@ -432,22 +686,30 @@
           `rotateY(${angulo}deg)`;
 
       }
+
     );
 
+
+    /* TERMINA */
 
     function terminarArrasto(e) {
 
       if (!arrastando) return;
 
+
       arrastando = false;
 
-      livro3d.classList.add("suave");
 
-      estrelaControle.classList.remove("arrastando");
+      estrelaControle.classList.remove(
+        "arrastando"
+      );
+
 
       try {
 
-        estrelaControle.releasePointerCapture(e.pointerId);
+        estrelaControle.releasePointerCapture(
+          e.pointerId
+        );
 
       } catch (erro) {}
 
@@ -465,7 +727,10 @@
       terminarArrasto
     );
 
+
   </script>
 
+
 </body>
+
 </html>
