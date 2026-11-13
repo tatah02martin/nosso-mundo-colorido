@@ -1,6 +1,13 @@
-<!DOCTYPE html><html lang="pt-BR"><head>
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">  <title>Nosso Mundo Colorido ✨</title>  <style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Nosso Mundo Colorido ✨</title>
+
+  <style>
 
     * {
       margin: 0;
@@ -11,231 +18,213 @@
     body {
       min-height: 100vh;
       font-family: Georgia, serif;
+
       background:
-        radial-gradient(circle at top, #27345F 0%, #11182C 45%, #070912 100%);
-      display: flex;
-      justify-content: center;
-      align-items: center;
+        radial-gradient(
+          circle at top,
+          #27345F 0%,
+          #11182C 45%,
+          #070912 100%
+        );
+
       overflow: hidden;
     }
 
-    /* Fundo estrelado */
+
+    /* FUNDO ESTRELADO */
+
     .cenario {
       position: fixed;
       inset: 0;
-      background-image:
-        radial-gradient(white 1px, transparent 1px),
-        radial-gradient(white 1px, transparent 1px);
-      background-size: 50px 50px, 90px 90px;
-      background-position: 0 0, 25px 35px;
-      opacity: 0.25;
-      pointer-events: none;
-    }
-
-    /* Área do livro */
-    .palco {
-      position: relative;
-      width: 100%;
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 12px;
-      perspective: 1800px;
-    }
-
-    /* Livro */
-    .livro {
-      position: relative;
-      width: min(88vw, 500px);
-      filter: drop-shadow(0 35px 30px rgba(0, 0, 0, 0.55));
-      transform-style: preserve-3d;
-    }
-
-    /* Primeira página */
-    .pagina-inicial {
-      position: absolute;
-      inset: 0;
-      z-index: 1;
-      overflow: hidden;
-      border-radius: 4px 18px 18px 4px;
-
-      background:
-        radial-gradient(circle at 50% 20%, #30457d 0%, #17213f 45%, #080b18 100%);
-
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      color: white;
-      padding: 30px;
-
-      box-shadow:
-        inset 0 0 50px rgba(255, 255, 255, 0.05),
-        inset 0 0 80px rgba(0, 0, 0, 0.35);
-    }
-
-    /* Estrelas da página */
-    .pagina-inicial::before {
-      content: "";
-      position: absolute;
-      inset: 0;
 
       background-image:
         radial-gradient(white 1px, transparent 1px),
-        radial-gradient(#dbe7ff 1px, transparent 1px),
-        radial-gradient(white 1.5px, transparent 1.5px);
+        radial-gradient(white 1px, transparent 1px),
+        radial-gradient(#b9cfff 1px, transparent 1px);
 
-      background-size: 35px 35px, 70px 70px, 110px 110px;
+      background-size:
+        50px 50px,
+        90px 90px,
+        140px 140px;
 
       background-position:
         0 0,
-        20px 30px,
-        50px 10px;
+        25px 35px,
+        70px 15px;
 
-      opacity: 0.45;
+      opacity: 0.28;
+
       pointer-events: none;
     }
 
-    /* Conteúdo */
-    .conteudo-pagina {
+
+    /* PALCO */
+
+    .palco {
       position: relative;
-      z-index: 2;
-    }
 
-    .texto-pequeno {
-      font-size: clamp(14px, 3vw, 20px);
-      letter-spacing: 2px;
-      opacity: 0.85;
-      margin-bottom: 18px;
-    }
-
-    .nome-giulia {
-      font-size: clamp(38px, 9vw, 68px);
-      font-style: italic;
-
-      text-shadow:
-        0 0 10px rgba(255, 255, 255, 0.5),
-        0 0 25px rgba(150, 190, 255, 0.35);
-
-      margin-bottom: 25px;
-    }
-
-    .presente {
-      font-size: clamp(15px, 3.5vw, 22px);
-      line-height: 1.6;
-      max-width: 350px;
-      opacity: 0.9;
-    }
-
-    .coracao {
-      font-size: clamp(25px, 6vw, 40px);
-      margin-top: 22px;
-      animation: pulsar 2s ease-in-out infinite;
-    }
-
-    @keyframes pulsar {
-      0%, 100% {
-        transform: scale(1);
-        opacity: 0.8;
-      }
-
-      50% {
-        transform: scale(1.15);
-        opacity: 1;
-      }
-    }
-
-    /* Estrela cadente */
-    .estrela-cadente {
-      position: absolute;
-      width: 120px;
-      height: 2px;
-      top: 18%;
-      left: -150px;
-
-      background:
-        linear-gradient(
-          90deg,
-          transparent,
-          white,
-          rgba(180, 210, 255, 0.8),
-          transparent
-        );
-
-      transform: rotate(-25deg);
-      opacity: 0;
-
-      animation: estrelaCadente 7s ease-in-out infinite;
-
-      z-index: 3;
-      pointer-events: none;
-    }
-
-    @keyframes estrelaCadente {
-      0% {
-        transform: translate(-150px, -80px) rotate(-25deg);
-        opacity: 0;
-      }
-
-      10% {
-        opacity: 1;
-      }
-
-      30% {
-        transform: translate(600px, 350px) rotate(-25deg);
-        opacity: 0;
-      }
-
-      100% {
-        opacity: 0;
-      }
-    }
-
-    /* Capa */
-    .capa {
-      position: relative;
       width: 100%;
-      cursor: grab;
+      min-height: 100vh;
 
-      border-radius: 0 18px 18px 0;
-      overflow: hidden;
-      background: #111;
+      display: flex;
+      flex-direction: column;
 
-      transform-origin: left center;
+      justify-content: center;
+      align-items: center;
+
+      padding: 24px;
+
+      perspective: 2200px;
+    }
+
+
+    /* ÁREA 3D */
+
+    .area-3d {
+      position: relative;
+
+      width: min(78vw, 460px);
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      transform-style: preserve-3d;
+    }
+
+
+    /* LIVRO 3D */
+
+    .livro-3d {
+      position: relative;
+
+      width: 100%;
+
+      aspect-ratio: 2 / 3;
+
       transform-style: preserve-3d;
 
-      z-index: 5;
+      transform: rotateY(0deg);
 
-      box-shadow:
-        inset 0px 15px rgba(0, 0, 0, 0.35),
-        inset -3px 0 8px rgba(255, 255, 255, 0.12);
+      filter:
+        drop-shadow(
+          0 35px 30px
+          rgba(0, 0, 0, 0.55)
+        );
 
-      touch-action: none;
-      user-select: none;
+      will-change: transform;
     }
 
-    .capa.arrastando {
-      cursor: grabbing;
-    }
 
-    .capa img {
+    /* TODAS AS PARTES DO LIVRO */
+
+    .face {
+      position: absolute;
+
+      inset: 0;
+
       width: 100%;
-      height: auto;
+      height: 100%;
+
+      backface-visibility: hidden;
+
+      transform-style: preserve-3d;
+    }
+
+
+    /* CAPA */
+
+    .capa-3d {
+      transform: translateZ(10px);
+
+      border-radius: 0 18px 18px 0;
+
+      overflow: hidden;
+    }
+
+    .capa-3d img {
+      width: 100%;
+      height: 100%;
+
+      object-fit: cover;
+
       display: block;
+
       pointer-events: none;
       user-select: none;
     }
 
-    /* Páginas na lateral */
-    .livro::before {
-      content: "";
+
+    /* CONTRACAPA */
+
+    .contracapa-3d {
+      transform:
+        rotateY(180deg)
+        translateZ(10px);
+
+      border-radius: 18px 0 0 18px;
+
+      overflow: hidden;
+    }
+
+    .contracapa-3d img {
+      width: 100%;
+      height: 100%;
+
+      object-fit: cover;
+
+      display: block;
+
+      pointer-events: none;
+      user-select: none;
+    }
+
+
+    /* LOMBADA */
+
+    .lombada-3d {
       position: absolute;
-      top: 12px;
+
+      top: 0;
+      left: 0;
+
+      width: 20px;
+      height: 100%;
+
+      transform:
+        rotateY(-90deg)
+        translateZ(10px);
+
+      transform-origin: left center;
+
+      overflow: hidden;
+
+      backface-visibility: visible;
+    }
+
+    .lombada-3d img {
+      width: 100%;
+      height: 100%;
+
+      object-fit: fill;
+
+      display: block;
+
+      pointer-events: none;
+      user-select: none;
+    }
+
+
+    /* LATERAL DAS PÁGINAS */
+
+    .paginas-lateral {
+      position: absolute;
+
+      top: 8px;
       right: -10px;
-      width: 12px;
-      height: calc(100% - 24px);
+
+      width: 14px;
+      height: calc(100% - 16px);
 
       background:
         linear-gradient(
@@ -245,138 +234,451 @@
           #cfc2a9
         );
 
-      transform: skewY(-2deg);
-      border-radius: 0 4px 4px 0;
-      z-index: -1;
-      box-shadow: 5px 5px 12px rgba(0, 0, 0, 0.3);
+      transform:
+        rotateY(90deg)
+        translateZ(10px);
+
+      border-radius: 2px;
+
+      box-shadow:
+        4px 4px 10px
+        rgba(0, 0, 0, 0.3);
     }
 
-    /* Lombada */
-    .livro::after {
-      content: "";
+
+    /* CONTROLE */
+
+    .controle-area {
+      position: relative;
+
+      width: min(70vw, 340px);
+
+      margin-top: 32px;
+
+      display: flex;
+      flex-direction: column;
+
+      align-items: center;
+    }
+
+
+    /* TEXTO DISCRETO */
+
+    .controle-texto {
+      color: rgba(220, 230, 255, 0.65);
+
+      font-size: 12px;
+
+      letter-spacing: 1px;
+
+      margin-bottom: 12px;
+
+      text-align: center;
+
+      opacity: 0.8;
+    }
+
+
+    /* CONSTELAÇÃO */
+
+    .constelacao {
+      position: relative;
+
+      width: 100%;
+      height: 42px;
+
+      display: flex;
+      align-items: center;
+
+      touch-action: none;
+
+      user-select: none;
+    }
+
+
+    /* LINHA PRINCIPAL */
+
+    .linha {
       position: absolute;
-      left: -8px;
-      top: 4px;
-      width: 14px;
-      height: calc(100% - 8px);
+
+      left: 0;
+      right: 0;
+
+      top: 50%;
+
+      height: 1px;
 
       background:
         linear-gradient(
-          to right,
-          rgba(0, 0, 0, 0.75),
-          rgba(255, 255, 255, 0.12),
-          rgba(0, 0, 0, 0.45)
+          90deg,
+          transparent,
+          rgba(180, 205, 255, 0.65),
+          rgba(255, 255, 255, 0.85),
+          rgba(180, 205, 255, 0.65),
+          transparent
         );
+    }
 
-      border-radius: 8px 0 0 8px;
-      z-index: 6;
+
+    /* PEQUENAS ESTRELAS DA CONSTELAÇÃO */
+
+    .pontinho {
+      position: absolute;
+
+      color: rgba(220, 235, 255, 0.75);
+
+      font-size: 10px;
+
       pointer-events: none;
     }
 
-    /* Ajustes para celular */
+    .ponto-1 {
+      left: 8%;
+      top: 8px;
+    }
+
+    .ponto-2 {
+      left: 25%;
+      bottom: 4px;
+    }
+
+    .ponto-3 {
+      right: 25%;
+      top: 4px;
+    }
+
+    .ponto-4 {
+      right: 8%;
+      bottom: 7px;
+    }
+
+
+    /* ESTRELA QUE ARRASTA */
+
+    .estrela-controle {
+      position: absolute;
+
+      left: 50%;
+      top: 50%;
+
+      transform:
+        translate(-50%, -50%);
+
+      width: 38px;
+      height: 38px;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      font-size: 25px;
+
+      color: #ffffff;
+
+      cursor: grab;
+
+      text-shadow:
+        0 0 8px rgba(180, 210, 255, 0.9),
+        0 0 18px rgba(150, 190, 255, 0.7);
+
+      z-index: 3;
+
+      touch-action: none;
+    }
+
+
+    .estrela-controle.arrastando {
+      cursor: grabbing;
+
+      transform:
+        translate(-50%, -50%)
+        scale(1.12);
+    }
+
+
+    /* BRILHO DA ESTRELA */
+
+    .estrela-controle::after {
+      content: "";
+
+      position: absolute;
+
+      width: 46px;
+      height: 46px;
+
+      border-radius: 50%;
+
+      background:
+        radial-gradient(
+          circle,
+          rgba(200, 220, 255, 0.16),
+          transparent 65%
+        );
+
+      z-index: -1;
+    }
+
+
+    /* ANIMAÇÃO SUAVE QUANDO NÃO ESTÁ ARRASTANDO */
+
+    .livro-3d.suave {
+      transition:
+        transform 0.8s ease-in-out;
+    }
+
+
+    .estrela-controle.suave {
+      transition:
+        left 0.25s ease;
+    }
+
+
+    /* CELULAR */
+
     @media (max-width: 600px) {
 
       .palco {
-        padding: 24px;
+        padding:
+          20px
+          16px
+          28px;
       }
 
-      .livro {
-        width: min(86vw, 58vh);
+      .area-3d {
+        width:
+          min(76vw, 54vh);
       }
 
-      .pagina-inicial {
-        padding: 20px;
+      .controle-area {
+        width:
+          min(68vw, 300px);
+
+        margin-top: 26px;
       }
 
     }
 
-  </style></head><body>  <div class="cenario"></div>  <main class="palco"><section class="livro" id="livro">
 
-  <!-- Primeira página -->
+    /* TELAS MUITO BAIXAS */
 
-  <div class="pagina-inicial">
+    @media (max-height: 650px) {
 
-    <div class="estrela-cadente"></div>
+      .area-3d {
+        width:
+          min(66vw, 50vh);
+      }
 
-    <div class="conteudo-pagina">
+      .controle-area {
+        margin-top: 18px;
+      }
 
-      <div class="texto-pequeno">
-        ESTE ÁLBUM PERTENCE A...
-      </div>
+    }
 
-      <div class="nome-giulia">
-        Giulia
-      </div>
+  </style>
 
-      <div class="presente">
-        Um presente feito com todo o meu amor,
-        para guardar um pouquinho da nossa história
-        e de tudo aquilo que ainda vamos viver juntas.
-      </div>
+</head>
 
-      <div class="coracao">
-        ♥
+
+<body>
+
+  <!-- Fundo -->
+
+  <div class="cenario"></div>
+
+
+  <!-- Palco -->
+
+  <main class="palco">
+
+
+    <!-- Área 3D -->
+
+    <div class="area-3d">
+
+
+      <!-- Livro -->
+
+      <div
+        class="livro-3d suave"
+        id="livro3d"
+      >
+
+
+        <!-- CAPA -->
+
+        <div class="face capa-3d">
+
+          <img
+            src="Capa.livro.png"
+            alt="Capa do livro Nosso Mundo Colorido">
+
+        </div>
+
+
+        <!-- CONTRACAPA -->
+
+        <div class="face contracapa-3d">
+
+          <img
+            src="file_00000000a9f0820e8a775aa484273482.png"
+            alt="Contracapa do livro">
+
+        </div>
+
+
+        <!-- LOMBADA -->
+
+        <div class="lombada-3d">
+
+          <img
+            src="file_00000000234c820eb65e5bcf2cbd6e66.png"
+            alt="Lombada do livro">
+
+        </div>
+
+
+        <!-- PÁGINAS -->
+
+        <div class="paginas-lateral"></div>
+
+
       </div>
 
     </div>
 
-  </div>
 
-  <!-- Capa -->
+    <!-- CONTROLE DA CONSTELAÇÃO -->
 
-  <div class="capa" id="capa">
+    <div class="controle-area">
 
-    <img
-      src="Capa.livro.png"
-      alt="Capa do livro Nosso Mundo Colorido">
+      <div class="controle-texto">
+        ARRASTE A ESTRELA PARA EXPLORAR
+      </div>
 
-  </div>
 
-</section>
+      <div
+        class="constelacao"
+        id="constelacao"
+      >
 
-  </main>  <script>
+        <div class="linha"></div>
 
-    const capa = document.getElementById("capa");
+        <span class="pontinho ponto-1">✦</span>
+        <span class="pontinho ponto-2">✧</span>
+        <span class="pontinho ponto-3">✦</span>
+        <span class="pontinho ponto-4">✧</span>
+
+
+        <!-- ESTRELA PRINCIPAL -->
+
+        <div
+          class="estrela-controle suave"
+          id="estrelaControle"
+        >
+          ✦
+        </div>
+
+
+      </div>
+
+    </div>
+
+
+  </main>
+
+
+  <script>
+
+    const livro3d =
+      document.getElementById("livro3d");
+
+    const constelacao =
+      document.getElementById("constelacao");
+
+    const estrelaControle =
+      document.getElementById("estrelaControle");
+
 
     let arrastando = false;
-    let inicioX = 0;
+
     let anguloAtual = 0;
 
-    const anguloMaximo = -165;
+
+    /* COMEÇA O ARRASTO */
+
+    estrelaControle.addEventListener(
+      "pointerdown",
+      function (e) {
+
+        arrastando = true;
+
+        estrelaControle.classList.remove("suave");
+
+        livro3d.classList.remove("suave");
+
+        estrelaControle.classList.add("arrastando");
+
+        estrelaControle.setPointerCapture(
+          e.pointerId
+        );
+
+      }
+    );
 
 
-    function iniciarArrasto(e) {
+    /* MOVE A ESTRELA E O LIVRO */
 
-      arrastando = true;
+    estrelaControle.addEventListener(
+      "pointermove",
+      function (e) {
 
-      inicioX = e.clientX;
-
-      capa.classList.add("arrastando");
-
-      capa.setPointerCapture(e.pointerId);
-
-    }
+        if (!arrastando) return;
 
 
-    function moverArrasto(e) {
+        const rect =
+          constelacao.getBoundingClientRect();
 
-      if (!arrastando) return;
 
-      const distancia = e.clientX - inicioX;
+        let posicao =
+          e.clientX - rect.left;
 
-      const largura = capa.offsetWidth;
 
-      let progresso = -distancia / largura;
+        /* Limita a estrela à barrinha */
 
-      progresso = Math.max(0, Math.min(1, progresso));
+        posicao =
+          Math.max(
+            0,
+            Math.min(
+              rect.width,
+              posicao
+            )
+          );
 
-      anguloAtual = progresso * anguloMaximo;
 
-      capa.style.transform =
-        `rotateY(${anguloAtual}deg)`;
+        /* Posição da estrela */
 
-    }
+        const porcentagem =
+          posicao / rect.width;
 
+
+        estrelaControle.style.left =
+          `${porcentagem * 100}%`;
+
+
+        /* Giro de 360 graus */
+
+        anguloAtual =
+          porcentagem * 360;
+
+
+        livro3d.style.transform =
+          `rotateY(${anguloAtual}deg)`;
+
+      }
+    );
+
+
+    /* TERMINA O ARRASTO */
 
     function terminarArrasto(e) {
 
@@ -384,54 +686,100 @@
 
       arrastando = false;
 
-      capa.classList.remove("arrastando");
 
-      /* Decide se abre ou fecha */
+      estrelaControle.classList.remove(
+        "arrastando"
+      );
 
-      if (anguloAtual < -82) {
 
-        anguloAtual = anguloMaximo;
+      estrelaControle.classList.add(
+        "suave"
+      );
 
-      } else {
 
-        anguloAtual = 0;
+      livro3d.classList.add(
+        "suave"
+      );
+
+
+      /* Libera o toque */
+
+      try {
+
+        estrelaControle.releasePointerCapture(
+          e.pointerId
+        );
+
+      } catch (erro) {
+
+        /* Nada precisa acontecer aqui */
 
       }
-
-      capa.style.transition =
-        "transform 1.2s ease-in-out";
-
-      capa.style.transform =
-        `rotateY(${anguloAtual}deg)`;
-
-
-      setTimeout(() => {
-
-        capa.style.transition = "none";
-
-      }, 1200);
 
     }
 
 
-    capa.addEventListener(
-      "pointerdown",
-      iniciarArrasto
-    );
-
-    capa.addEventListener(
-      "pointermove",
-      moverArrasto
-    );
-
-    capa.addEventListener(
+    estrelaControle.addEventListener(
       "pointerup",
       terminarArrasto
     );
 
-    capa.addEventListener(
+
+    estrelaControle.addEventListener(
       "pointercancel",
       terminarArrasto
     );
 
-  </script></body></html>
+
+    /* Permite clicar diretamente na linha */
+
+    constelacao.addEventListener(
+      "pointerdown",
+      function (e) {
+
+        if (
+          e.target === estrelaControle
+        ) return;
+
+
+        const rect =
+          constelacao.getBoundingClientRect();
+
+
+        let posicao =
+          e.clientX - rect.left;
+
+
+        posicao =
+          Math.max(
+            0,
+            Math.min(
+              rect.width,
+              posicao
+            )
+          );
+
+
+        const porcentagem =
+          posicao / rect.width;
+
+
+        estrelaControle.style.left =
+          `${porcentagem * 100}%`;
+
+
+        anguloAtual =
+          porcentagem * 360;
+
+
+        livro3d.style.transform =
+          `rotateY(${anguloAtual}deg)`;
+
+      }
+    );
+
+  </script>
+
+</body>
+
+</html>
