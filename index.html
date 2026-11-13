@@ -1,13 +1,6 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-
-<head>
+<!DOCTYPE html><html lang="pt-BR"><head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>Nosso Mundo Colorido ✨</title>
-
-  <style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">  <title>Nosso Mundo Colorido ✨</title>  <style>
 
     * {
       margin: 0;
@@ -26,65 +19,45 @@
       overflow: hidden;
     }
 
-
-    /* FUNDO ESTRELADO */
-
+    /* Fundo estrelado */
     .cenario {
       position: fixed;
       inset: 0;
-
       background-image:
         radial-gradient(white 1px, transparent 1px),
         radial-gradient(white 1px, transparent 1px);
-
       background-size: 50px 50px, 90px 90px;
       background-position: 0 0, 25px 35px;
-
       opacity: 0.25;
       pointer-events: none;
     }
 
-
-    /* ÁREA DO LIVRO */
-
+    /* Área do livro */
     .palco {
       position: relative;
       width: 100%;
       min-height: 100vh;
-
       display: flex;
       justify-content: center;
       align-items: center;
-
       padding: 12px;
       perspective: 1800px;
     }
 
-
-    /* LIVRO */
-
+    /* Livro */
     .livro {
       position: relative;
-
       width: min(88vw, 500px);
-
-      filter:
-        drop-shadow(0 35px 30px rgba(0, 0, 0, 0.55));
-
+      filter: drop-shadow(0 35px 30px rgba(0, 0, 0, 0.55));
       transform-style: preserve-3d;
     }
 
-
-    /* PRIMEIRA PÁGINA */
-
+    /* Primeira página */
     .pagina-inicial {
       position: absolute;
       inset: 0;
-
       z-index: 1;
-
       overflow: hidden;
-
       border-radius: 4px 18px 18px 4px;
 
       background:
@@ -94,11 +67,8 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
-
       text-align: center;
-
       color: white;
-
       padding: 30px;
 
       box-shadow:
@@ -106,12 +76,9 @@
         inset 0 0 80px rgba(0, 0, 0, 0.35);
     }
 
-
-    /* ESTRELAS DA PÁGINA */
-
+    /* Estrelas da página */
     .pagina-inicial::before {
       content: "";
-
       position: absolute;
       inset: 0;
 
@@ -120,10 +87,7 @@
         radial-gradient(#dbe7ff 1px, transparent 1px),
         radial-gradient(white 1.5px, transparent 1.5px);
 
-      background-size:
-        35px 35px,
-        70px 70px,
-        110px 110px;
+      background-size: 35px 35px, 70px 70px, 110px 110px;
 
       background-position:
         0 0,
@@ -131,50 +95,24 @@
         50px 10px;
 
       opacity: 0.45;
-
       pointer-events: none;
     }
 
-
-    /* CONTEÚDO DA PÁGINA */
-
+    /* Conteúdo */
     .conteudo-pagina {
       position: relative;
       z-index: 2;
-
-      animation: aparecer 2s ease forwards;
     }
-
-
-    @keyframes aparecer {
-
-      from {
-        opacity: 0;
-        transform: translateY(15px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-
-    }
-
 
     .texto-pequeno {
       font-size: clamp(14px, 3vw, 20px);
-
       letter-spacing: 2px;
-
       opacity: 0.85;
-
       margin-bottom: 18px;
     }
 
-
     .nome-giulia {
       font-size: clamp(38px, 9vw, 68px);
-
       font-style: italic;
 
       text-shadow:
@@ -184,29 +122,20 @@
       margin-bottom: 25px;
     }
 
-
     .presente {
       font-size: clamp(15px, 3.5vw, 22px);
-
       line-height: 1.6;
-
       max-width: 350px;
-
       opacity: 0.9;
     }
 
-
     .coracao {
       font-size: clamp(25px, 6vw, 40px);
-
       margin-top: 22px;
-
       animation: pulsar 2s ease-in-out infinite;
     }
 
-
     @keyframes pulsar {
-
       0%, 100% {
         transform: scale(1);
         opacity: 0.8;
@@ -216,18 +145,13 @@
         transform: scale(1.15);
         opacity: 1;
       }
-
     }
 
-
-    /* ESTRELA CADENTE */
-
+    /* Estrela cadente */
     .estrela-cadente {
       position: absolute;
-
       width: 120px;
       height: 2px;
-
       top: 18%;
       left: -150px;
 
@@ -241,25 +165,17 @@
         );
 
       transform: rotate(-25deg);
-
       opacity: 0;
 
-      animation:
-        estrelaCadente 7s ease-in-out infinite;
+      animation: estrelaCadente 7s ease-in-out infinite;
 
       z-index: 3;
-
       pointer-events: none;
     }
 
-
     @keyframes estrelaCadente {
-
       0% {
-        transform:
-          translate(-150px, -80px)
-          rotate(-25deg);
-
+        transform: translate(-150px, -80px) rotate(-25deg);
         opacity: 0;
       }
 
@@ -268,80 +184,57 @@
       }
 
       30% {
-        transform:
-          translate(600px, 350px)
-          rotate(-25deg);
-
+        transform: translate(600px, 350px) rotate(-25deg);
         opacity: 0;
       }
 
       100% {
         opacity: 0;
       }
-
     }
 
-
-    /* CAPA */
-
+    /* Capa */
     .capa {
       position: relative;
-
       width: 100%;
-
-      cursor: pointer;
+      cursor: grab;
 
       border-radius: 0 18px 18px 0;
-
       overflow: hidden;
-
       background: #111;
 
       transform-origin: left center;
-
       transform-style: preserve-3d;
 
       z-index: 5;
 
-      transition:
-        transform 1.8s cubic-bezier(0.65, 0, 0.35, 1);
-
       box-shadow:
         inset 0px 15px rgba(0, 0, 0, 0.35),
         inset -3px 0 8px rgba(255, 255, 255, 0.12);
+
+      touch-action: none;
+      user-select: none;
     }
 
-
-    /* IMAGEM DA CAPA */
+    .capa.arrastando {
+      cursor: grabbing;
+    }
 
     .capa img {
       width: 100%;
       height: auto;
-
       display: block;
+      pointer-events: none;
+      user-select: none;
     }
 
-
-    /* ANIMAÇÃO DA CAPA ABRINDO */
-
-    .livro.aberto .capa {
-      transform:
-        rotateY(-165deg);
-    }
-
-
-    /* PÁGINAS NA LATERAL */
-
+    /* Páginas na lateral */
     .livro::before {
       content: "";
-
       position: absolute;
-
       top: 12px;
       right: -10px;
-
       width: 12px;
-
       height: calc(100% - 24px);
 
       background:
@@ -353,28 +246,18 @@
         );
 
       transform: skewY(-2deg);
-
       border-radius: 0 4px 4px 0;
-
       z-index: -1;
-
-      box-shadow:
-        5px 5px 12px rgba(0, 0, 0, 0.3);
+      box-shadow: 5px 5px 12px rgba(0, 0, 0, 0.3);
     }
 
-
-    /* LOMBADA */
-
+    /* Lombada */
     .livro::after {
       content: "";
-
       position: absolute;
-
       left: -8px;
       top: 4px;
-
       width: 14px;
-
       height: calc(100% - 8px);
 
       background:
@@ -386,15 +269,11 @@
         );
 
       border-radius: 8px 0 0 8px;
-
       z-index: 6;
-
       pointer-events: none;
     }
 
-
-    /* CELULAR */
-
+    /* Ajustes para celular */
     @media (max-width: 600px) {
 
       .palco {
@@ -411,81 +290,148 @@
 
     }
 
-  </style>
+  </style></head><body>  <div class="cenario"></div>  <main class="palco"><section class="livro" id="livro">
 
-</head>
+  <!-- Primeira página -->
 
+  <div class="pagina-inicial">
 
-<body>
+    <div class="estrela-cadente"></div>
 
-  <div class="cenario"></div>
+    <div class="conteudo-pagina">
 
-
-  <main class="palco">
-
-    <section class="livro" id="livro">
-
-
-      <!-- PRIMEIRA PÁGINA -->
-
-      <div class="pagina-inicial">
-
-        <div class="estrela-cadente"></div>
-
-        <div class="conteudo-pagina">
-
-          <div class="texto-pequeno">
-            ESTE ÁLBUM PERTENCE A...
-          </div>
-
-          <div class="nome-giulia">
-            Giulia
-          </div>
-
-          <div class="presente">
-            Um presente feito com todo o meu amor,
-            para guardar um pouquinho da nossa história
-            e de tudo aquilo que ainda vamos viver juntas.
-          </div>
-
-          <div class="coracao">
-            ♥
-          </div>
-
-        </div>
-
+      <div class="texto-pequeno">
+        ESTE ÁLBUM PERTENCE A...
       </div>
 
-
-      <!-- CAPA -->
-
-      <div class="capa" id="capa">
-
-        <img
-          src="Capa.livro.png"
-          alt="Capa do livro Nosso Mundo Colorido">
-
+      <div class="nome-giulia">
+        Giulia
       </div>
 
+      <div class="presente">
+        Um presente feito com todo o meu amor,
+        para guardar um pouquinho da nossa história
+        e de tudo aquilo que ainda vamos viver juntas.
+      </div>
 
-    </section>
+      <div class="coracao">
+        ♥
+      </div>
 
-  </main>
+    </div>
 
+  </div>
 
-  <script>
+  <!-- Capa -->
 
-    const livro = document.getElementById("livro");
+  <div class="capa" id="capa">
+
+    <img
+      src="Capa.livro.png"
+      alt="Capa do livro Nosso Mundo Colorido">
+
+  </div>
+
+</section>
+
+  </main>  <script>
+
     const capa = document.getElementById("capa");
 
-    capa.addEventListener("click", function () {
+    let arrastando = false;
+    let inicioX = 0;
+    let anguloAtual = 0;
 
-      livro.classList.add("aberto");
+    const anguloMaximo = -165;
 
-    });
 
-  </script>
+    function iniciarArrasto(e) {
 
-</body>
+      arrastando = true;
 
-</html>
+      inicioX = e.clientX;
+
+      capa.classList.add("arrastando");
+
+      capa.setPointerCapture(e.pointerId);
+
+    }
+
+
+    function moverArrasto(e) {
+
+      if (!arrastando) return;
+
+      const distancia = e.clientX - inicioX;
+
+      const largura = capa.offsetWidth;
+
+      let progresso = -distancia / largura;
+
+      progresso = Math.max(0, Math.min(1, progresso));
+
+      anguloAtual = progresso * anguloMaximo;
+
+      capa.style.transform =
+        `rotateY(${anguloAtual}deg)`;
+
+    }
+
+
+    function terminarArrasto(e) {
+
+      if (!arrastando) return;
+
+      arrastando = false;
+
+      capa.classList.remove("arrastando");
+
+      /* Decide se abre ou fecha */
+
+      if (anguloAtual < -82) {
+
+        anguloAtual = anguloMaximo;
+
+      } else {
+
+        anguloAtual = 0;
+
+      }
+
+      capa.style.transition =
+        "transform 0.7s ease";
+
+      capa.style.transform =
+        `rotateY(${anguloAtual}deg)`;
+
+
+      setTimeout(() => {
+
+        capa.style.transition = "none";
+
+      }, 700);
+
+    }
+
+
+    capa.addEventListener(
+      "pointerdown",
+      iniciarArrasto
+    );
+
+    capa.addEventListener(
+      "pointermove",
+      moverArrasto
+    );
+
+    capa.addEventListener(
+      "pointerup",
+      terminarArrasto
+    );
+
+    capa.addEventListener(
+      "pointercancel",
+      terminarArrasto
+    );
+
+  </script></body></html>
