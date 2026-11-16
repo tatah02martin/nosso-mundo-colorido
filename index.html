@@ -46,22 +46,23 @@
     }
 
     .livro-area {
-      position: relative;
-      width: min(82vw, 460px);
-      aspect-ratio: 2 / 3;
-      perspective: 1800px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
+  position: relative;
+  width: clamp(240px, 27vw, 360px);
+  aspect-ratio: 2 / 3;
+  perspective: 1800px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
     .livro {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      transform-style: preserve-3d;
-      filter: drop-shadow(0 35px 30px rgba(0, 0, 0, 0.55));
-    }
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  filter: none;
+  box-shadow: 0 18px 28px rgba(0, 0, 0, 0.28);
+}
 
     .pagina-interna {
       position: absolute;
