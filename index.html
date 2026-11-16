@@ -1,835 +1,396 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
   <meta charset="UTF-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>Nosso Mundo Colorido ✨</title>
 
-
   <style>
-
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
 
-
     body {
       min-height: 100vh;
-
       font-family: Georgia, serif;
-
       background:
-        radial-gradient(
-          circle at top,
-          #27345F 0%,
-          #11182C 45%,
-          #070912 100%
-        );
-
+        radial-gradient(circle at top, #27345F 0%, #11182C 45%, #070912 100%);
       overflow: hidden;
     }
 
-
-    /* =========================
-       FUNDO ESTRELADO
-       ========================= */
-
+    /* Fundo estrelado */
     .cenario {
       position: fixed;
       inset: 0;
-
       background-image:
         radial-gradient(white 1px, transparent 1px),
-        radial-gradient(white 1px, transparent 1px),
-        radial-gradient(#b9cfff 1px, transparent 1px);
-
-      background-size:
-        50px 50px,
-        90px 90px,
-        140px 140px;
-
-      background-position:
-        0 0,
-        25px 35px,
-        70px 15px;
-
-      opacity: 0.28;
-
+        radial-gradient(white 1px, transparent 1px);
+      background-size: 50px 50px, 90px 90px;
+      background-position: 0 0, 25px 35px;
+      opacity: 0.25;
       pointer-events: none;
     }
 
-
-    /* =========================
-       PALCO
-       ========================= */
-
+    /* Palco */
     .palco {
       position: relative;
-
       width: 100%;
       min-height: 100vh;
-
       display: flex;
-      flex-direction: column;
-
       justify-content: center;
       align-items: center;
-
       padding: 20px;
-
       perspective: 1800px;
     }
 
-
-    /* =========================
-       ÁREA DO LIVRO
-       ========================= */
-
-    .area-livro {
+    /* Área do livro */
+    .livro-area {
       position: relative;
-
-      width: min(76vw, 54vh);
+      width: min(82vw, 460px);
       aspect-ratio: 2 / 3;
-
+      perspective: 1800px;
       display: flex;
       justify-content: center;
       align-items: center;
     }
 
-
-    /* =========================
-       LIVRO 3D
-       ========================= */
-
-    .livro-3d {
-
-      /* Espessura visual */
-
-      --profundidade: 32px;
-
+    /* Livro */
+    .livro {
       position: relative;
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+      filter: drop-shadow(0 35px 30px rgba(0, 0, 0, 0.55));
+    }
 
+    /* Parte interna que aparece quando abre */
+    .pagina-interna {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(135deg, #f8f2e7, #e9ddca);
+      border-radius: 4px 16px 16px 4px;
+
+      box-shadow:
+        inset 10px 0 18px rgba(0, 0, 0, 0.12),
+        0 8px 20px rgba(0, 0, 0, 0.25);
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .pagina-interna::before {
+      content: "✨";
+      font-size: 42px;
+      opacity: 0.55;
+    }
+
+    /* Capa */
+    .capa {
+      position: absolute;
+      inset: 0;
       width: 100%;
       height: 100%;
 
+      transform-origin: left center;
       transform-style: preserve-3d;
 
-      transform: rotateY(0deg);
+      cursor: grab;
+      touch-action: none;
 
       will-change: transform;
 
-      filter:
-        drop-shadow(
-          0 30px 28px
-          rgba(0, 0, 0, 0.55)
-        );
+      z-index: 2;
     }
 
+    .capa.arrastando {
+      cursor: grabbing;
+    }
 
-    /* =========================
-       CAPA E CONTRACAPA
-       ========================= */
-
-    .frente,
-    .tras {
-
+    /* Frente da capa */
+    .capa-frente {
       position: absolute;
-
       inset: 0;
 
-      width: 100%;
-      height: 100%;
-
-      overflow: hidden;
-
       backface-visibility: hidden;
-    }
-
-
-    .frente img,
-    .tras img {
-
-      width: 100%;
-      height: 100%;
-
-      display: block;
-
-      object-fit: fill;
-
-      pointer-events: none;
-      user-select: none;
-    }
-
-
-    /* CAPA */
-
-    .frente {
-
-      transform:
-        translateZ(
-          calc(var(--profundidade) / 2)
-        );
-
-      border-radius:
-        0 14px 14px 0;
-    }
-
-
-    /* CONTRACAPA */
-
-    .tras {
-
-      transform:
-        rotateY(180deg)
-        translateZ(
-          calc(var(--profundidade) / 2)
-        );
-
-      border-radius:
-        14px 0 0 14px;
-    }
-
-
-    /* =========================
-       LOMBADA
-       ========================= */
-
-    .lombada {
-
-      position: absolute;
-
-      top: 0;
-      left: 50%;
-
-      width:
-        var(--profundidade);
-
-      height: 100%;
-
-      margin-left:
-        calc(var(--profundidade) / -2);
+      -webkit-backface-visibility: hidden;
 
       overflow: hidden;
+      border-radius: 0 18px 18px 0;
 
-      backface-visibility: visible;
-
-      transform:
-        rotateY(-90deg)
-        translateZ(var(--meia-largura));
-    }
-
-
-    .lombada img {
-
-      width: 100%;
-      height: 100%;
-
-      display: block;
-
-      object-fit: fill;
-
-      pointer-events: none;
-      user-select: none;
-    }
-
-
-    /* =========================
-       LATERAL DAS PÁGINAS
-       ========================= */
-
-    .paginas {
-
-      position: absolute;
-
-      top: 6px;
-      left: 50%;
-
-      width:
-        var(--profundidade);
-
-      height:
-        calc(100% - 12px);
-
-      margin-left:
-        calc(var(--profundidade) / -2);
-
-      background:
-
-        repeating-linear-gradient(
-          to bottom,
-
-          #eee5d2 0px,
-          #eee5d2 2px,
-
-          #cfc3ab 3px,
-
-          #f7f0df 4px
-        );
-
+      background: #111;
 
       box-shadow:
-
-        inset 2px 0 4px
-        rgba(0, 0, 0, 0.22),
-
-        inset -2px 0 3px
-        rgba(255, 255, 255, 0.35);
-
-
-      transform:
-        rotateY(90deg)
-        translateZ(var(--meia-largura));
+        inset 0 0 0 1px rgba(255, 255, 255, 0.08);
     }
 
-
-    /* =========================
-       CONTROLE
-       ========================= */
-
-    .controle-area {
-
-      width:
-        min(68vw, 300px);
-
-      margin-top: 28px;
-
-      display: flex;
-      flex-direction: column;
-
-      align-items: center;
-    }
-
-
-    .controle-texto {
-
-      color:
-        rgba(220, 230, 255, 0.6);
-
-      font-size: 10px;
-
-      letter-spacing: 1.2px;
-
-      margin-bottom: 10px;
-
-      text-align: center;
-    }
-
-
-    /* =========================
-       CONSTELAÇÃO
-       ========================= */
-
-    .constelacao {
-
-      position: relative;
-
+    .capa-frente img {
       width: 100%;
-      height: 44px;
-
-      touch-action: none;
-
+      height: 100%;
+      object-fit: fill;
+      display: block;
+      pointer-events: none;
       user-select: none;
     }
 
-
-    .linha {
-
+    /* Verso da capa */
+    .capa-verso {
       position: absolute;
+      inset: 0;
 
-      left: 0;
-      right: 0;
+      transform: rotateY(180deg);
 
-      top: 50%;
-
-      height: 1px;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
 
       background:
+        linear-gradient(135deg, #f8f2e7, #e9ddca);
 
-        linear-gradient(
-          90deg,
+      border-radius: 18px 0 0 18px;
 
-          transparent,
-
-          rgba(180, 205, 255, 0.65),
-
-          rgba(255, 255, 255, 0.9),
-
-          rgba(180, 205, 255, 0.65),
-
-          transparent
-        );
+      box-shadow:
+        inset 8px 0 15px rgba(0, 0, 0, 0.12);
     }
 
-
-    /* Estrelas pequenas */
-
-    .pontinho {
-
+    /* Lombada visual */
+    .lombada {
       position: absolute;
+      left: -7px;
+      top: 4px;
+      width: 14px;
+      height: calc(100% - 8px);
 
-      color:
-        rgba(220, 235, 255, 0.75);
+      background:
+        linear-gradient(
+          to right,
+          rgba(0, 0, 0, 0.7),
+          rgba(255, 255, 255, 0.14),
+          rgba(0, 0, 0, 0.45)
+        );
 
-      font-size: 10px;
+      border-radius: 8px 0 0 8px;
 
+      z-index: 5;
       pointer-events: none;
     }
 
-
-    .ponto-1 {
-      left: 8%;
-      top: 6px;
-    }
-
-
-    .ponto-2 {
-      left: 25%;
-      bottom: 4px;
-    }
-
-
-    .ponto-3 {
-      right: 25%;
-      top: 4px;
-    }
-
-
-    .ponto-4 {
-      right: 8%;
-      bottom: 6px;
-    }
-
-
-    /* =========================
-       ESTRELA ARRASTÁVEL
-       ========================= */
-
-    .estrela-controle {
-
+    /* Páginas na lateral direita */
+    .paginas-lateral {
       position: absolute;
+      top: 12px;
+      right: -10px;
+      width: 12px;
+      height: calc(100% - 24px);
 
-      left: 50%;
-      top: 50%;
+      background:
+        linear-gradient(
+          to right,
+          #9c927c,
+          #f3ead7,
+          #cfc2a9
+        );
 
-      width: 42px;
-      height: 42px;
+      transform: skewY(-2deg);
 
-      display: flex;
+      border-radius: 0 4px 4px 0;
 
-      justify-content: center;
-      align-items: center;
+      z-index: -1;
 
-      transform:
-        translate(-50%, -50%);
-
-      font-size: 26px;
-
-      color: white;
-
-      cursor: grab;
-
-      z-index: 10;
-
-      touch-action: none;
-
-      text-shadow:
-
-        0 0 8px
-        rgba(180, 210, 255, 0.9),
-
-        0 0 18px
-        rgba(150, 190, 255, 0.7);
+      box-shadow:
+        5px 5px 12px rgba(0, 0, 0, 0.3);
     }
 
-
-    .estrela-controle.arrastando {
-
-      cursor: grabbing;
-
-      transform:
-        translate(-50%, -50%)
-        scale(1.12);
+    /* Quando o livro está aberto */
+    .livro-aberto .pagina-interna {
+      border-radius: 4px 16px 16px 4px;
     }
 
-
-    /* =========================
-       CELULAR
-       ========================= */
-
+    /* Ajuste para celular */
     @media (max-width: 600px) {
-
       .palco {
-
-        padding:
-          18px
-          16px
-          24px;
+        padding: 20px;
       }
 
-
-      .area-livro {
-
-        width:
-          min(76vw, 54vh);
+      .livro-area {
+        /* Menor para não ficar muito próximo da câmera */
+        width: min(76vw, 52vh);
       }
-
-
-      .controle-area {
-
-        width:
-          min(68vw, 300px);
-
-        margin-top: 22px;
-      }
-
     }
 
   </style>
-
 </head>
-
 
 <body>
 
-
-  <!-- FUNDO -->
-
   <div class="cenario"></div>
-
-
-  <!-- PALCO -->
 
   <main class="palco">
 
+    <section class="livro-area">
 
-    <!-- ÁREA DO LIVRO -->
+      <div class="livro" id="livro">
 
-    <div class="area-livro">
+        <!-- Página que aparece atrás da capa -->
+        <div class="pagina-interna"></div>
 
+        <!-- Lateral das páginas -->
+        <div class="paginas-lateral"></div>
 
-      <!-- LIVRO 3D -->
+        <!-- Lombada -->
+        <div class="lombada"></div>
 
-      <div
-        class="livro-3d"
-        id="livro3d"
-      >
+        <!-- Capa que abre -->
+        <div class="capa" id="capa">
 
+          <!-- Frente -->
+          <div class="capa-frente">
+            <img
+              src="Capa.livro.png"
+              alt="Capa do livro Nosso Mundo Colorido"
+            >
+          </div>
 
-        <!-- =====================
-             CAPA
-             ===================== -->
-
-        <div class="frente">
-
-          <img
-            src="Capa.livro.png"
-            alt="Capa do livro Nosso Mundo Colorido"
-          >
-
-        </div>
-
-
-
-        <!-- =====================
-             CONTRACAPA
-             ===================== -->
-
-        <div class="tras">
-
-          <img
-            src="file_00000000a9f0820e8a775aa484273482.png"
-            alt="Contracapa do livro"
-          >
+          <!-- Verso -->
+          <div class="capa-verso"></div>
 
         </div>
-
-
-
-        <!-- =====================
-             LOMBADA
-             ===================== -->
-
-        <div class="lombada">
-
-          <img
-            src="file_00000000234c820eb65e5bcf2cbd6e66.png"
-            alt="Lombada do livro"
-          >
-
-        </div>
-
-
-
-        <!-- =====================
-             PÁGINAS
-             ===================== -->
-
-        <div class="paginas"></div>
-
 
       </div>
 
-
-    </div>
-
-
-
-    <!-- =====================
-         CONTROLE
-         ===================== -->
-
-    <div class="controle-area">
-
-
-      <div class="controle-texto">
-
-        ARRASTE A ESTRELA PARA EXPLORAR
-
-      </div>
-
-
-
-      <div
-        class="constelacao"
-        id="constelacao"
-      >
-
-
-        <div class="linha"></div>
-
-
-        <span class="pontinho ponto-1">✦</span>
-
-        <span class="pontinho ponto-2">✧</span>
-
-        <span class="pontinho ponto-3">✦</span>
-
-        <span class="pontinho ponto-4">✧</span>
-
-
-
-        <!-- ESTRELA -->
-
-        <div
-          class="estrela-controle"
-          id="estrelaControle"
-        >
-
-          ✦
-
-        </div>
-
-
-      </div>
-
-
-    </div>
-
+    </section>
 
   </main>
 
 
-
   <script>
 
-
-    const livro3d =
-      document.getElementById("livro3d");
-
-
-    const constelacao =
-      document.getElementById("constelacao");
-
-
-    const estrelaControle =
-      document.getElementById("estrelaControle");
-
+    const capa = document.getElementById("capa");
 
     let arrastando = false;
+    let anguloAtual = 0;
+
+    let inicioX = 0;
+    let anguloInicio = 0;
 
 
-
-    /* =========================
-       CALCULA A LARGURA
-       ========================= */
-
-    function atualizarLivro() {
-
-
-      const largura =
-        livro3d.offsetWidth;
-
-
-      livro3d.style.setProperty(
-
-        "--meia-largura",
-
-        `${largura / 2}px`
-
-      );
-
+    function limitar(valor, minimo, maximo) {
+      return Math.max(minimo, Math.min(maximo, valor));
     }
 
 
-    atualizarLivro();
+    function aplicarRotacao(angulo) {
+      anguloAtual = angulo;
+
+      capa.style.transform =
+        `rotateY(${anguloAtual}deg)`;
+    }
 
 
-    window.addEventListener(
-      "resize",
-      atualizarLivro
-    );
+    /* Começa o arrasto */
+
+    capa.addEventListener("pointerdown", function(e) {
+
+      arrastando = true;
+
+      inicioX = e.clientX;
+      anguloInicio = anguloAtual;
+
+      capa.classList.add("arrastando");
+
+      capa.setPointerCapture(e.pointerId);
+
+    });
 
 
+    /* Movimento */
 
-    /* =========================
-       COMEÇA A ARRASTAR
-       ========================= */
-
-    estrelaControle.addEventListener(
-
-      "pointerdown",
-
-      function (e) {
-
-
-        arrastando = true;
-
-
-        estrelaControle.classList.add(
-          "arrastando"
-        );
-
-
-        estrelaControle.setPointerCapture(
-          e.pointerId
-        );
-
-
-      }
-
-    );
-
-
-
-    /* =========================
-       MOVIMENTO
-       ========================= */
-
-    estrelaControle.addEventListener(
-
-      "pointermove",
-
-      function (e) {
-
-
-        if (!arrastando) return;
-
-
-        const rect =
-          constelacao.getBoundingClientRect();
-
-
-        let x =
-          e.clientX - rect.left;
-
-
-        /* Não deixa sair da linha */
-
-        x =
-          Math.max(
-
-            0,
-
-            Math.min(
-              rect.width,
-              x
-            )
-
-          );
-
-
-        const porcentagem =
-          x / rect.width;
-
-
-        /* Move a estrela */
-
-        estrelaControle.style.left =
-          `${porcentagem * 100}%`;
-
-
-        /* =====================
-           GIRA O LIVRO
-           ===================== */
-
-        const angulo =
-          porcentagem * 360;
-
-
-        livro3d.style.transform =
-          `rotateY(${angulo}deg)`;
-
-
-      }
-
-    );
-
-
-
-    /* =========================
-       TERMINA O ARRASTO
-       ========================= */
-
-    function terminarArrasto(e) {
-
+    capa.addEventListener("pointermove", function(e) {
 
       if (!arrastando) return;
 
+      const largura = capa.getBoundingClientRect().width;
+
+      const movimento =
+        e.clientX - inicioX;
+
+      /*
+        Arrastar para a esquerda abre.
+        Arrastar para a direita fecha.
+      */
+
+      const variacao =
+        (movimento / largura) * 180;
+
+      let novoAngulo =
+        anguloInicio + variacao;
+
+      novoAngulo =
+        limitar(novoAngulo, -180, 0);
+
+      aplicarRotacao(novoAngulo);
+
+    });
+
+
+    /* Termina o arrasto */
+
+    function terminarArrasto(e) {
+
+      if (!arrastando) return;
 
       arrastando = false;
 
-
-      estrelaControle.classList.remove(
-        "arrastando"
-      );
-
+      capa.classList.remove("arrastando");
 
       try {
-
-        estrelaControle.releasePointerCapture(
-          e.pointerId
-        );
-
+        capa.releasePointerCapture(e.pointerId);
       } catch (erro) {}
 
+
+      /*
+        Se passou da metade, abre.
+        Caso contrário, fecha.
+      */
+
+      let destino;
+
+      if (anguloAtual < -90) {
+        destino = -180;
+      } else {
+        destino = 0;
+      }
+
+
+      /*
+        Animação suave
+      */
+
+      capa.style.transition =
+        "transform 0.9s cubic-bezier(0.22, 0.61, 0.36, 1)";
+
+
+      aplicarRotacao(destino);
+
+
+      setTimeout(function() {
+
+        capa.style.transition = "";
+
+      }, 900);
 
     }
 
 
+    capa.addEventListener("pointerup", terminarArrasto);
 
-    estrelaControle.addEventListener(
-      "pointerup",
-      terminarArrasto
-    );
-
-
-    estrelaControle.addEventListener(
-      "pointercancel",
-      terminarArrasto
-    );
-
+    capa.addEventListener("pointercancel", terminarArrasto);
 
   </script>
 
-
 </body>
-
 </html>
