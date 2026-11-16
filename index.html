@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -21,7 +22,6 @@
       overflow: hidden;
     }
 
-    /* Fundo estrelado */
     .cenario {
       position: fixed;
       inset: 0;
@@ -34,7 +34,6 @@
       pointer-events: none;
     }
 
-    /* Palco */
     .palco {
       position: relative;
       width: 100%;
@@ -46,7 +45,6 @@
       perspective: 1800px;
     }
 
-    /* Área do livro */
     .livro-area {
       position: relative;
       width: min(82vw, 460px);
@@ -57,7 +55,6 @@
       align-items: center;
     }
 
-    /* Livro */
     .livro {
       position: relative;
       width: 100%;
@@ -66,18 +63,14 @@
       filter: drop-shadow(0 35px 30px rgba(0, 0, 0, 0.55));
     }
 
-    /* Parte interna que aparece quando abre */
     .pagina-interna {
       position: absolute;
       inset: 0;
-      background:
-        linear-gradient(135deg, #f8f2e7, #e9ddca);
+      background: linear-gradient(135deg, #f8f2e7, #e9ddca);
       border-radius: 4px 16px 16px 4px;
-
       box-shadow:
         inset 10px 0 18px rgba(0, 0, 0, 0.12),
         0 8px 20px rgba(0, 0, 0, 0.25);
-
       display: flex;
       align-items: center;
       justify-content: center;
@@ -90,21 +83,20 @@
       opacity: 0.55;
     }
 
-    /* Capa */
     .capa {
       position: absolute;
       inset: 0;
       width: 100%;
       height: 100%;
-
       transform-origin: left center;
       transform-style: preserve-3d;
-
+      transform: rotateY(0deg);
       cursor: grab;
       touch-action: none;
-
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-user-drag: none;
       will-change: transform;
-
       z-index: 2;
     }
 
@@ -112,21 +104,20 @@
       cursor: grabbing;
     }
 
-    /* Frente da capa */
-    .capa-frente {
+    .capa-frente,
+    .capa-verso {
       position: absolute;
       inset: 0;
+      pointer-events: none;
+    }
 
-      backface-visibility: hidden;
-      -webkit-backface-visibility: hidden;
-
+    .capa-frente {
       overflow: hidden;
       border-radius: 0 18px 18px 0;
-
       background: #111;
-
-      box-shadow:
-        inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
     }
 
     .capa-frente img {
@@ -136,92 +127,62 @@
       display: block;
       pointer-events: none;
       user-select: none;
+      -webkit-user-drag: none;
     }
 
-    /* Verso da capa */
     .capa-verso {
-      position: absolute;
-      inset: 0;
-
       transform: rotateY(180deg);
-
       backface-visibility: hidden;
       -webkit-backface-visibility: hidden;
-
-      background:
-        linear-gradient(135deg, #f8f2e7, #e9ddca);
-
+      background: linear-gradient(135deg, #f8f2e7, #e9ddca);
       border-radius: 18px 0 0 18px;
-
-      box-shadow:
-        inset 8px 0 15px rgba(0, 0, 0, 0.12);
+      box-shadow: inset 8px 0 15px rgba(0, 0, 0, 0.12);
     }
 
-    /* Lombada visual */
     .lombada {
       position: absolute;
       left: -7px;
       top: 4px;
       width: 14px;
       height: calc(100% - 8px);
-
-      background:
-        linear-gradient(
-          to right,
-          rgba(0, 0, 0, 0.7),
-          rgba(255, 255, 255, 0.14),
-          rgba(0, 0, 0, 0.45)
-        );
-
+      background: linear-gradient(
+        to right,
+        rgba(0, 0, 0, 0.7),
+        rgba(255, 255, 255, 0.14),
+        rgba(0, 0, 0, 0.45)
+      );
       border-radius: 8px 0 0 8px;
-
       z-index: 5;
       pointer-events: none;
     }
 
-    /* Páginas na lateral direita */
     .paginas-lateral {
       position: absolute;
       top: 12px;
       right: -10px;
       width: 12px;
       height: calc(100% - 24px);
-
-      background:
-        linear-gradient(
-          to right,
-          #9c927c,
-          #f3ead7,
-          #cfc2a9
-        );
-
+      background: linear-gradient(
+        to right,
+        #9c927c,
+        #f3ead7,
+        #cfc2a9
+      );
       transform: skewY(-2deg);
-
       border-radius: 0 4px 4px 0;
-
       z-index: -1;
-
-      box-shadow:
-        5px 5px 12px rgba(0, 0, 0, 0.3);
+      box-shadow: 5px 5px 12px rgba(0, 0, 0, 0.3);
     }
 
-    /* Quando o livro está aberto */
-    .livro-aberto .pagina-interna {
-      border-radius: 4px 16px 16px 4px;
-    }
-
-    /* Ajuste para celular */
     @media (max-width: 600px) {
       .palco {
         padding: 20px;
       }
 
       .livro-area {
-        /* Menor para não ficar muito próximo da câmera */
         width: min(76vw, 52vh);
       }
     }
-
   </style>
 </head>
 
@@ -230,165 +191,125 @@
   <div class="cenario"></div>
 
   <main class="palco">
-
     <section class="livro-area">
 
       <div class="livro" id="livro">
 
-        <!-- Página que aparece atrás da capa -->
         <div class="pagina-interna"></div>
 
-        <!-- Lateral das páginas -->
         <div class="paginas-lateral"></div>
 
-        <!-- Lombada -->
         <div class="lombada"></div>
 
-        <!-- Capa que abre -->
         <div class="capa" id="capa">
 
-          <!-- Frente -->
           <div class="capa-frente">
             <img
               src="Capa.livro.png"
               alt="Capa do livro Nosso Mundo Colorido"
+              draggable="false"
             >
           </div>
 
-          <!-- Verso -->
           <div class="capa-verso"></div>
 
         </div>
 
       </div>
-
     </section>
-
   </main>
 
-
   <script>
-
     const capa = document.getElementById("capa");
 
     let arrastando = false;
     let anguloAtual = 0;
-
     let inicioX = 0;
     let anguloInicio = 0;
-
+    let ponteiroAtivo = null;
 
     function limitar(valor, minimo, maximo) {
       return Math.max(minimo, Math.min(maximo, valor));
     }
 
-
     function aplicarRotacao(angulo) {
       anguloAtual = angulo;
-
-      capa.style.transform =
-        `rotateY(${anguloAtual}deg)`;
+      capa.style.transform = `rotateY(${anguloAtual}deg)`;
     }
 
-
-    /* Começa o arrasto */
-
+    // INÍCIO DO ARRASTE
     capa.addEventListener("pointerdown", function(e) {
 
+      if (e.pointerType === "mouse" && e.button !== 0) {
+        return;
+      }
+
+      e.preventDefault();
+
       arrastando = true;
+      ponteiroAtivo = e.pointerId;
 
       inicioX = e.clientX;
       anguloInicio = anguloAtual;
 
+      capa.style.transition = "none";
       capa.classList.add("arrastando");
 
-      capa.setPointerCapture(e.pointerId);
+      try {
+        capa.setPointerCapture(e.pointerId);
+      } catch (erro) {}
 
     });
 
-
-    /* Movimento */
-
-    capa.addEventListener("pointermove", function(e) {
+    // MOVIMENTO DO MOUSE OU DEDO
+    window.addEventListener("pointermove", function(e) {
 
       if (!arrastando) return;
+      if (e.pointerId !== ponteiroAtivo) return;
+
+      e.preventDefault();
 
       const largura = capa.getBoundingClientRect().width;
 
-      const movimento =
-        e.clientX - inicioX;
+      const movimento = e.clientX - inicioX;
 
-      /*
-        Arrastar para a esquerda abre.
-        Arrastar para a direita fecha.
-      */
+      // Arrastar para a esquerda abre.
+      // Arrastar para a direita fecha.
+      const variacao = (movimento / largura) * 180;
 
-      const variacao =
-        (movimento / largura) * 180;
-
-      let novoAngulo =
-        anguloInicio + variacao;
-
-      novoAngulo =
-        limitar(novoAngulo, -180, 0);
+      const novoAngulo = limitar(
+        anguloInicio + variacao,
+        -180,
+        0
+      );
 
       aplicarRotacao(novoAngulo);
 
-    });
+    }, { passive: false });
 
-
-    /* Termina o arrasto */
-
+    // FINAL DO ARRASTE
     function terminarArrasto(e) {
 
       if (!arrastando) return;
+      if (e.pointerId !== ponteiroAtivo) return;
 
       arrastando = false;
+      ponteiroAtivo = null;
 
       capa.classList.remove("arrastando");
 
-      try {
-        capa.releasePointerCapture(e.pointerId);
-      } catch (erro) {}
-
-
-      /*
-        Se passou da metade, abre.
-        Caso contrário, fecha.
-      */
-
-      let destino;
-
-      if (anguloAtual < -90) {
-        destino = -180;
-      } else {
-        destino = 0;
-      }
-
-
-      /*
-        Animação suave
-      */
+      // Decide se termina aberta ou fechada.
+      const destino = anguloAtual < -90 ? -180 : 0;
 
       capa.style.transition =
         "transform 0.9s cubic-bezier(0.22, 0.61, 0.36, 1)";
 
-
       aplicarRotacao(destino);
-
-
-      setTimeout(function() {
-
-        capa.style.transition = "";
-
-      }, 900);
 
     }
 
-
-    capa.addEventListener("pointerup", terminarArrasto);
-
-    capa.addEventListener("pointercancel", terminarArrasto);
+    window.addEventListener("pointerup", terminarArrasto);
+    window.addEventListener("pointercancel", terminarArrasto);
 
   </script>
 
