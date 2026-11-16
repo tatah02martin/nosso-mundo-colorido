@@ -220,99 +220,107 @@
     </section>
   </main>
 
-  <script>
-    const capa = document.getElementById("capa");
+  
+<script>
+  const capa = document.getElementById("capa");
 
-    let arrastando = false;
-    let anguloAtual = 0;
-    let inicioX = 0;
-    let anguloInicio = 0;
-    let ponteiroAtivo = null;
+  let arrastando = false;
+  let anguloAtual = 0;
+  let inicioX = 0;
+  let anguloInicio = 0;
+  let ponteiroAtivo = null;
 
-    function limitar(valor, minimo, maximo) {
-      return Math.max(minimo, Math.min(maximo, valor));
+  let movimentoPendente = null;
+  let quadroAgendado = false;
+
+  function limitar(valor, minimo, maximo) {
+    return Math.max(minimo, Math.min(maximo, valor));
+  }
+
+  function aplicarRotacao(angulo) {
+    anguloAtual = angulo;
+    capa.style.transform = `rotate3d(0, 1, 0, ${angulo}deg)`;
+  }
+
+  function atualizarMovimento() {
+    quadroAgendado = false;
+
+    if (!arrastando || movimentoPendente === null) return;
+
+    const largura = capa.getBoundingClientRect().width;
+    const movimento = movimentoPendente - inicioX;
+
+    const variacao = (movimento / largura) * 180;
+
+    const novoAngulo = limitar(
+      anguloInicio + variacao,
+      -180,
+      0
+    );
+
+    aplicarRotacao(novoAngulo);
+    movimentoPendente = null;
+  }
+
+  capa.addEventListener("pointerdown", function(e) {
+    if (e.pointerType === "mouse" && e.button !== 0) return;
+
+    e.preventDefault();
+
+    arrastando = true;
+    ponteiroAtivo = e.pointerId;
+
+    inicioX = e.clientX;
+    anguloInicio = anguloAtual;
+
+    movimentoPendente = null;
+
+    capa.style.transition = "none";
+    capa.classList.add("arrastando");
+
+    try {
+      capa.setPointerCapture(e.pointerId);
+    } catch (erro) {}
+  });
+
+  window.addEventListener("pointermove", function(e) {
+    if (!arrastando || e.pointerId !== ponteiroAtivo) return;
+
+    e.preventDefault();
+
+    movimentoPendente = e.clientX;
+
+    if (!quadroAgendado) {
+      quadroAgendado = true;
+      requestAnimationFrame(atualizarMovimento);
+    }
+  }, { passive: false });
+
+  function terminarArrasto(e) {
+    if (!arrastando || e.pointerId !== ponteiroAtivo) return;
+
+    // Aplica o último movimento antes de decidir o destino.
+    if (movimentoPendente !== null) {
+      atualizarMovimento();
     }
 
-    function aplicarRotacao(angulo) {
-      anguloAtual = angulo;
-      capa.style.transform = `rotateY(${anguloAtual}deg)`;
-    }
+    arrastando = false;
+    ponteiroAtivo = null;
+    movimentoPendente = null;
 
-    // INÍCIO DO ARRASTE
-    capa.addEventListener("pointerdown", function(e) {
+    capa.classList.remove("arrastando");
 
-      if (e.pointerType === "mouse" && e.button !== 0) {
-        return;
-      }
+    const destino = anguloAtual < -90 ? -180 : 0;
 
-      e.preventDefault();
+    capa.style.transition =
+      "transform 0.65s cubic-bezier(0.22, 0.61, 0.36, 1)";
 
-      arrastando = true;
-      ponteiroAtivo = e.pointerId;
+    aplicarRotacao(destino);
+  }
 
-      inicioX = e.clientX;
-      anguloInicio = anguloAtual;
-
-      capa.style.transition = "none";
-      capa.classList.add("arrastando");
-
-      try {
-        capa.setPointerCapture(e.pointerId);
-      } catch (erro) {}
-
-    });
-
-    // MOVIMENTO DO MOUSE OU DEDO
-    window.addEventListener("pointermove", function(e) {
-
-      if (!arrastando) return;
-      if (e.pointerId !== ponteiroAtivo) return;
-
-      e.preventDefault();
-
-      const largura = capa.getBoundingClientRect().width;
-
-      const movimento = e.clientX - inicioX;
-
-      // Arrastar para a esquerda abre.
-      // Arrastar para a direita fecha.
-      const variacao = (movimento / largura) * 180;
-
-      const novoAngulo = limitar(
-        anguloInicio + variacao,
-        -180,
-        0
-      );
-
-      aplicarRotacao(novoAngulo);
-
-    }, { passive: false });
-
-    // FINAL DO ARRASTE
-    function terminarArrasto(e) {
-
-      if (!arrastando) return;
-      if (e.pointerId !== ponteiroAtivo) return;
-
-      arrastando = false;
-      ponteiroAtivo = null;
-
-      capa.classList.remove("arrastando");
-
-      // Decide se termina aberta ou fechada.
-      const destino = anguloAtual < -90 ? -180 : 0;
-
-      capa.style.transition =
-        "transform 0.9s cubic-bezier(0.22, 0.61, 0.36, 1)";
-
-      aplicarRotacao(destino);
-
-    }
-
-    window.addEventListener("pointerup", terminarArrasto);
-    window.addEventListener("pointercancel", terminarArrasto);
-
-  </script>
+  window.addEventListener("pointerup", terminarArrasto);
+  window.addEventListener("pointercancel", terminarArrasto);
+</script>
 
 </body>
 </html>
