@@ -1,0 +1,216 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Teste do Livro - Nosso Mundo Colorido</title>
+
+<style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    radial-gradient(circle at top, #27345F 0%, #11182C 45%, #070912 100%);
+  font-family: Georgia, serif;
+}
+
+.cenario {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: .25;
+  background-image:
+    radial-gradient(white 1px, transparent 1px),
+    radial-gradient(white 1px, transparent 1px);
+  background-size: 50px 50px, 90px 90px;
+  background-position: 0 0, 25px 35px;
+}
+
+.conteudo {
+  position: relative;
+  z-index: 1;
+  width: min(720px, 94vw);
+  height: min(540px, 82vh);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#livro {
+  width: 100%;
+  height: 100%;
+}
+
+.pagina {
+  background: #f4ecdf;
+  color: #514536;
+  overflow: hidden;
+}
+
+.capa {
+  background: #111;
+}
+
+.capa img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.interna {
+  height: 100%;
+  width: 100%;
+  padding: 35px 25px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background:
+    linear-gradient(135deg, #fbf6ed, #e9ddca);
+}
+
+.interna .estrela {
+  font-size: 38px;
+  margin-bottom: 18px;
+}
+
+.interna h2 {
+  font-size: 23px;
+  font-weight: normal;
+  margin-bottom: 12px;
+}
+
+.interna p {
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.contracapa {
+  background: linear-gradient(135deg, #27345F, #11182C);
+  color: #f8f2e7;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 25px;
+}
+
+.contracapa p {
+  font-size: 22px;
+  line-height: 1.6;
+}
+
+@media (max-width: 600px) {
+  .conteudo {
+    width: 94vw;
+    height: 78vh;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="cenario"></div>
+
+<main class="conteudo">
+  <div id="livro">
+
+    <!-- CAPA -->
+    <div class="pagina capa" data-density="hard">
+      <img
+        src="Capa.livro.png"
+        alt="Capa do Nosso Mundo Colorido"
+        draggable="false"
+      >
+    </div>
+
+    <!-- PRIMEIRA PÁGINA INTERNA -->
+    <div class="pagina">
+      <div class="interna">
+        <div class="estrela">✨</div>
+        <h2>Nosso mundo colorido</h2>
+        <p>Um universo inteiro de lembranças espera por você...</p>
+      </div>
+    </div>
+
+    <!-- SEGUNDA PÁGINA INTERNA -->
+    <div class="pagina">
+      <div class="interna">
+        <div class="estrela">🌙</div>
+        <h2>Era uma vez...</h2>
+        <p>Duas histórias que encontraram uma maneira linda de se tornar uma só.</p>
+      </div>
+    </div>
+
+    <!-- CONTRACAPA -->
+    <div class="pagina contracapa" data-density="hard">
+      <p>As estrelas também. ✨</p>
+    </div>
+
+  </div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js"></script>
+
+<script>
+window.addEventListener("load", function() {
+
+  const elementoLivro = document.getElementById("livro");
+
+  if (!window.St || !window.St.PageFlip) {
+    document.body.insertAdjacentHTML(
+      "beforeend",
+      '<p style="position:fixed;bottom:15px;color:white;text-align:center;padding:10px;">Não foi possível carregar a biblioteca. Verifique sua conexão.</p>'
+    );
+    return;
+  }
+
+  const pageFlip = new St.PageFlip(elementoLivro, {
+    width: 360,
+    height: 540,
+
+    size: "stretch",
+    minWidth: 240,
+    maxWidth: 360,
+    minHeight: 360,
+    maxHeight: 540,
+
+    autoSize: false,
+    showCover: true,
+    usePortrait: true,
+
+    flippingTime: 900,
+    drawShadow: true,
+    maxShadowOpacity: 0.25,
+
+    mobileScrollSupport: false,
+    useMouseEvents: true,
+    disableFlipByClick: true,
+
+    startPage: 0
+  });
+
+  pageFlip.loadFromHTML(
+    document.querySelectorAll(".pagina")
+  );
+
+});
+</script>
+
+</body>
+</html>
