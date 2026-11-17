@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -130,7 +129,7 @@ body {
 <main class="conteudo">
   <div id="livro">
 
-    <!-- CAPA -->
+    <!-- CAPA RÍGIDA -->
     <div class="pagina capa" data-density="hard">
       <img
         src="Capa.livro.png"
@@ -139,8 +138,8 @@ body {
       >
     </div>
 
-    <!-- PRIMEIRA PÁGINA INTERNA -->
-    <div class="pagina">
+    <!-- PÁGINA FLEXÍVEL -->
+    <div class="pagina" data-density="soft">
       <div class="interna">
         <div class="estrela">✨</div>
         <h2>Nosso mundo colorido</h2>
@@ -148,8 +147,8 @@ body {
       </div>
     </div>
 
-    <!-- SEGUNDA PÁGINA INTERNA -->
-    <div class="pagina">
+    <!-- PÁGINA FLEXÍVEL -->
+    <div class="pagina" data-density="soft">
       <div class="interna">
         <div class="estrela">🌙</div>
         <h2>Era uma vez...</h2>
@@ -157,7 +156,7 @@ body {
       </div>
     </div>
 
-    <!-- CONTRACAPA -->
+    <!-- CONTRACAPA RÍGIDA -->
     <div class="pagina contracapa" data-density="hard">
       <p>As estrelas também. ✨</p>
     </div>
@@ -181,6 +180,7 @@ window.addEventListener("load", function() {
   }
 
   const pageFlip = new St.PageFlip(elementoLivro, {
+
     width: 360,
     height: 540,
 
@@ -195,9 +195,11 @@ window.addEventListener("load", function() {
     usePortrait: true,
 
     flippingTime: 900,
-    drawShadow: true,
-    maxShadowOpacity: 0.25,
 
+    drawShadow: true,
+    maxShadowOpacity: 0.38,
+
+    showPageCorners: true,
     mobileScrollSupport: false,
     useMouseEvents: true,
     disableFlipByClick: true,
