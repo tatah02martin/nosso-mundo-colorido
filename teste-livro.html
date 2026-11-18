@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Teste do Livro - Nosso Mundo Colorido</title>
 
 <style>
@@ -12,14 +13,20 @@
   padding: 0;
 }
 
+html, body {
+  width: 100%;
+  height: 100%;
+}
+
 body {
-  min-height: 100vh;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
+
   background:
     radial-gradient(circle at top, #27345F 0%, #11182C 45%, #070912 100%);
+
   font-family: Georgia, serif;
 }
 
@@ -28,9 +35,11 @@ body {
   inset: 0;
   pointer-events: none;
   opacity: .25;
+
   background-image:
     radial-gradient(white 1px, transparent 1px),
     radial-gradient(white 1px, transparent 1px);
+
   background-size: 50px 50px, 90px 90px;
   background-position: 0 0, 25px 35px;
 }
@@ -38,16 +47,20 @@ body {
 .conteudo {
   position: relative;
   z-index: 1;
-  width: min(720px, 94vw);
-  height: min(540px, 82vh);
+
+  width: 100vw;
+  height: 100vh;
+
   display: flex;
   align-items: center;
   justify-content: center;
+
+  overflow: hidden;
+  padding: 12px;
 }
 
 #livro {
-  width: 100%;
-  height: 100%;
+  margin: auto;
 }
 
 .pagina {
@@ -64,20 +77,26 @@ body {
   display: block;
   width: 100%;
   height: 100%;
+
   object-fit: fill;
+
   user-select: none;
   -webkit-user-drag: none;
 }
 
 .interna {
-  height: 100%;
   width: 100%;
-  padding: 35px 25px;
+  height: 100%;
+
+  padding: 25px 18px;
+
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
   text-align: center;
+
   background:
     linear-gradient(135deg, #fbf6ed, #e9ddca);
 }
@@ -101,9 +120,11 @@ body {
 .contracapa {
   background: linear-gradient(135deg, #27345F, #11182C);
   color: #f8f2e7;
+
   display: flex;
   justify-content: center;
   align-items: center;
+
   text-align: center;
   padding: 25px;
 }
@@ -111,13 +132,6 @@ body {
 .contracapa p {
   font-size: 22px;
   line-height: 1.6;
-}
-
-@media (max-width: 600px) {
-  .conteudo {
-    width: 94vw;
-    height: 78vh;
-  }
 }
 </style>
 </head>
@@ -129,7 +143,7 @@ body {
 <main class="conteudo">
   <div id="livro">
 
-    <!-- CAPA RÍGIDA -->
+    <!-- CAPA -->
     <div class="pagina capa" data-density="hard">
       <img
         src="Capa.livro.png"
@@ -138,25 +152,31 @@ body {
       >
     </div>
 
-    <!-- PÁGINA FLEXÍVEL -->
+    <!-- PRIMEIRA PÁGINA -->
     <div class="pagina" data-density="soft">
       <div class="interna">
         <div class="estrela">✨</div>
         <h2>Nosso mundo colorido</h2>
-        <p>Um universo inteiro de lembranças espera por você...</p>
+        <p>
+          Um universo inteiro de lembranças
+          espera por você...
+        </p>
       </div>
     </div>
 
-    <!-- PÁGINA FLEXÍVEL -->
+    <!-- SEGUNDA PÁGINA -->
     <div class="pagina" data-density="soft">
       <div class="interna">
         <div class="estrela">🌙</div>
         <h2>Era uma vez...</h2>
-        <p>Duas histórias que encontraram uma maneira linda de se tornar uma só.</p>
+        <p>
+          Duas histórias que encontraram
+          uma maneira linda de se tornar uma só.
+        </p>
       </div>
     </div>
 
-    <!-- CONTRACAPA RÍGIDA -->
+    <!-- CONTRACAPA -->
     <div class="pagina contracapa" data-density="hard">
       <p>As estrelas também. ✨</p>
     </div>
@@ -179,18 +199,53 @@ window.addEventListener("load", function() {
     return;
   }
 
+  // Calcula o tamanho de cada página
+  // considerando a largura e a altura da tela.
+
+  const margemLateral = 24;
+  const margemVertical = 150;
+
+  const larguraDisponivel =
+    (window.innerWidth - margemLateral) / 2;
+
+  const alturaDisponivel =
+    (window.innerHeight - margemVertical) / 1.5;
+
+  const larguraPagina = Math.floor(
+    Math.min(
+      360,
+      larguraDisponivel,
+      alturaDisponivel
+    )
+  );
+
+  const alturaPagina = Math.floor(
+    larguraPagina * 1.5
+  );
+
+  // Define o tamanho do livro antes de inicializar.
+
+  elementoLivro.style.width =
+    (larguraPagina * 2) + "px";
+
+  elementoLivro.style.height =
+    alturaPagina + "px";
+
   const pageFlip = new St.PageFlip(elementoLivro, {
 
-    width: 360,
-    height: 540,
+    width: larguraPagina,
+    height: alturaPagina,
 
-    size: "stretch",
-    minWidth: 240,
-    maxWidth: 360,
-    minHeight: 360,
-    maxHeight: 540,
+    size: "fixed",
 
-    autoSize: false,
+    minWidth: larguraPagina,
+    maxWidth: larguraPagina,
+
+    minHeight: alturaPagina,
+    maxHeight: alturaPagina,
+
+    autoSize: true,
+
     showCover: true,
     usePortrait: false,
 
@@ -200,9 +255,11 @@ window.addEventListener("load", function() {
     maxShadowOpacity: 0.38,
 
     showPageCorners: true,
+
     mobileScrollSupport: false,
     useMouseEvents: true,
-    disableFlipByClick: true,
+
+    disableFlipByClick: false,
 
     startPage: 0
   });
