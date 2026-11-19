@@ -1,275 +1,1085 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nosso Mundo Colorido ✨</title>
 
-<title>Teste do Livro - Nosso Mundo Colorido</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
 
-<style>
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+    body {
+      min-height: 100vh;
+      min-height: 100dvh;
+      font-family: Georgia, serif;
+      background: radial-gradient(circle at top, #1e2538 0%, #111521 55%, #080a10 100%);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: #fff;
+    }
 
-html, body {
-  width: 100%;
-  height: 100%;
-}
+    .tela-carregamento {
+      position: fixed;
+      inset: 0;
+      background: #0d111c;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      z-index: 999;
+      font-family: system-ui, -apple-system, sans-serif;
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.8);
+      transition: opacity 0.4s ease, visibility 0.4s ease;
+    }
 
-body {
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    .tela-carregamento.pronto {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
 
-  background:
-    radial-gradient(circle at top, #27345F 0%, #11182C 45%, #070912 100%);
+    .estrela-loading {
+      font-size: 1.5rem;
+      animation: pulsar 1.4s infinite ease-in-out;
+    }
 
-  font-family: Georgia, serif;
-}
+    @keyframes pulsar {
+      0%, 100% { transform: scale(0.9); opacity: 0.5; }
+      50% { transform: scale(1.15); opacity: 1; }
+    }
 
-.cenario {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  opacity: .25;
+    .cenario {
+      position: fixed;
+      inset: 0;
+      background-image:
+        radial-gradient(white 1px, transparent 1px),
+        radial-gradient(white 1px, transparent 1px);
+      background-size: 55px 55px, 95px 95px;
+      background-position: 0 0, 25px 35px;
+      opacity: 0.18;
+      pointer-events: none;
+    }
 
-  background-image:
-    radial-gradient(white 1px, transparent 1px),
-    radial-gradient(white 1px, transparent 1px);
+    .topo-info {
+      position: fixed;
+      top: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 14px;
+      font-family: system-ui, -apple-system, sans-serif;
+      font-size: 0.85rem;
+      z-index: 100;
+      background: rgba(15, 19, 30, 0.65);
+      padding: 6px 16px;
+      border-radius: 20px;
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      white-space: nowrap;
+    }
 
-  background-size: 50px 50px, 90px 90px;
-  background-position: 0 0, 25px 35px;
-}
+    .topo-titulo {
+      font-weight: 600;
+      color: #fff;
+    }
 
-.conteudo {
-  position: relative;
-  z-index: 1;
+    .topo-sub {
+      color: rgba(255, 255, 255, 0.55);
+    }
 
-  width: 100vw;
-  height: 100vh;
+    .palco {
+      position: relative;
+      width: 100vw;
+      height: 100dvh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      perspective: 2200px;
+      overflow: hidden;
+      touch-action: pan-y pinch-zoom;
+    }
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    /* Medidas aprovadas preservadas */
+    .camera {
+      position: relative;
+      width: min(72vw, 330px);
+      max-height: 64dvh;
+      aspect-ratio: 2 / 3;
+      transform-style: preserve-3d;
+      transition: transform 0.65s cubic-bezier(0.22, 0.61, 0.36, 1);
+      transform: translate3d(0%, 0%, 0px) scale(1);
+      will-change: transform;
+      cursor: grab;
+    }
 
-  overflow: hidden;
-  padding: 12px;
-}
+    .camera.arrastando {
+      cursor: grabbing;
+    }
 
-#livro {
-  margin: auto;
-}
+    @media (orientation: landscape) and (max-height: 540px) {
+      .camera {
+        width: auto;
+        height: 56dvh;
+      }
+    }
 
-.pagina {
-  background: #f4ecdf;
-  color: #514536;
-  overflow: hidden;
-}
+    .livro-rotacao {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+      transition: transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+      user-select: none;
+      will-change: transform;
+    }
 
-.capa {
-  background: #111;
-}
+    .livro-rotacao.sem-transicao {
+      transition: none;
+    }
 
-.capa img {
-  display: block;
-  width: 100%;
-  height: 100%;
+    .lombada {
+      position: absolute;
+      left: -8px;
+      top: 2px;
+      width: 16px;
+      height: calc(100% - 4px);
+      background: linear-gradient(to right, #0a0d18, #2b3554, #0a0d18);
+      transform: rotateY(-90deg);
+      border-radius: 4px;
+      z-index: 20;
+      pointer-events: none;
+    }
 
-  object-fit: fill;
+    .contracapa {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(145deg, #1b2440, #0d1222);
+      border-radius: 16px 0 0 16px;
+      transform: translateZ(-10px) rotateY(180deg);
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 28px;
+      text-align: center;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+    }
 
-  user-select: none;
-  -webkit-user-drag: none;
-}
+    .contracapa p {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: #d8dff5;
+      font-style: italic;
+    }
 
-.interna {
-  width: 100%;
-  height: 100%;
+    .paginas-lateral {
+      position: absolute;
+      top: 6px;
+      right: -5px;
+      width: 10px;
+      height: calc(100% - 12px);
+      background: repeating-linear-gradient(
+        to right,
+        #dcd2be 0px,
+        #f7f1e3 2px,
+        #c5b89e 3px
+      );
+      transform: rotateY(90deg);
+      border-radius: 0 4px 4px 0;
+      pointer-events: none;
+    }
 
-  padding: 25px 18px;
+    .folha {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      transform-origin: left center;
+      transform-style: preserve-3d;
+      transition: transform 0.65s cubic-bezier(0.22, 0.61, 0.36, 1);
+      user-select: none;
+      will-change: transform;
+    }
 
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+    .folha.arrastando-folha {
+      transition: none;
+    }
 
-  text-align: center;
+    .face {
+      position: absolute;
+      inset: 0;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      overflow: hidden;
+    }
 
-  background:
-    linear-gradient(135deg, #fbf6ed, #e9ddca);
-}
+    .sombra-dobra {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to right,
+        rgba(0, 0, 0, 0.24) 0%,
+        rgba(0, 0, 0, 0.06) 28%,
+        transparent 60%,
+        rgba(0, 0, 0, 0.14) 100%
+      );
+      opacity: 0;
+      pointer-events: none;
+    }
 
-.interna .estrela {
-  font-size: 38px;
-  margin-bottom: 18px;
-}
+    .frente {
+      border-radius: 3px 14px 14px 3px;
+      background: linear-gradient(135deg, #fbf7f0, #ede2cf);
+      color: #2c241b;
+      box-shadow:
+        inset 14px 0 22px rgba(0, 0, 0, 0.09),
+        0 8px 24px rgba(0, 0, 0, 0.35);
+      padding: 22px 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
 
-.interna h2 {
-  font-size: 23px;
-  font-weight: normal;
-  margin-bottom: 12px;
-}
+    .verso {
+      transform: rotateY(180deg);
+      border-radius: 14px 3px 3px 14px;
+      background: linear-gradient(225deg, #fbf7f0, #ede2cf);
+      color: #2c241b;
+      box-shadow:
+        inset -14px 0 22px rgba(0, 0, 0, 0.09),
+        0 8px 24px rgba(0, 0, 0, 0.35);
+      padding: 22px 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
 
-.interna p {
-  font-size: 15px;
-  line-height: 1.7;
-}
+    .capa-frente {
+      padding: 0;
+      background: #1b2440;
+      border-radius: 0 16px 16px 0;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
-.contracapa {
-  background: linear-gradient(135deg, #27345F, #11182C);
-  color: #f8f2e7;
+    .capa-frente img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+      pointer-events: none;
+    }
 
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    .pagina-titulo {
+      font-size: 1rem;
+      font-weight: bold;
+      color: #5a3e28;
+      text-align: center;
+      border-bottom: 1px solid rgba(90, 62, 40, 0.2);
+      padding-bottom: 8px;
+    }
 
-  text-align: center;
-  padding: 25px;
-}
+    .foto-moldura {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      background: #e5dccb;
+      padding: 6px 6px 18px 6px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.16);
+      border-radius: 2px;
+      margin: 8px 0;
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
-.contracapa p {
-  font-size: 22px;
-  line-height: 1.6;
-}
-</style>
+    .foto-moldura img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.35s ease;
+    }
+
+    .foto-moldura img.carregada {
+      opacity: 1;
+    }
+
+    .foto-moldura.erro-imagem::after {
+      content: "✨";
+      font-size: 1.4rem;
+      color: #8c7a6b;
+      opacity: 0.6;
+    }
+
+    .pagina-texto {
+      font-size: 0.83rem;
+      line-height: 1.48;
+      color: #3d3126;
+      text-align: center;
+    }
+
+    .numero-pagina {
+      font-size: 0.7rem;
+      color: #8c7a6b;
+      text-align: center;
+    }
+
+    .area-inferior {
+      position: fixed;
+      bottom: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      width: min(86vw, 340px);
+      z-index: 100;
+      font-family: system-ui, -apple-system, sans-serif;
+    }
+
+    .trilho-giro-container {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      transition: opacity 0.35s ease, transform 0.35s ease;
+    }
+
+    .trilho-giro-container.oculto {
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(8px);
+    }
+
+    .trilho-linha {
+      position: relative;
+      width: 210px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      touch-action: none;
+    }
+
+    .trilho-linha::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(
+        to right,
+        transparent 0%,
+        rgba(255, 255, 255, 0.38) 20%,
+        rgba(255, 255, 255, 0.38) 80%,
+        transparent 100%
+      );
+    }
+
+    .estrela-puxador {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 26px;
+      height: 26px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff6d6;
+      cursor: grab;
+      touch-action: none;
+      user-select: none;
+      filter: drop-shadow(0 0 6px rgba(255, 235, 165, 0.75));
+      transition: transform 0.15s ease, filter 0.15s ease;
+    }
+
+    .estrela-puxador:hover {
+      transform: translateX(-50%) scale(1.18);
+      filter: drop-shadow(0 0 10px rgba(255, 235, 165, 1));
+    }
+
+    .estrela-puxador.arrastando {
+      cursor: grabbing;
+      transform: translateX(-50%) scale(1.25);
+    }
+
+    .estrela-puxador svg {
+      width: 16px;
+      height: 16px;
+      fill: currentColor;
+    }
+
+    .legenda-estrela {
+      font-size: 0.68rem;
+      letter-spacing: 0.04em;
+      color: rgba(255, 255, 255, 0.45);
+    }
+
+    .barra-navegacao {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .btn-seta {
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      color: #fff;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      font-size: 1.05rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      backdrop-filter: blur(8px);
+      transition: all 0.2s ease;
+    }
+
+    .btn-seta:hover:not(:disabled) {
+      background: rgba(255, 255, 255, 0.18);
+      transform: scale(1.05);
+    }
+
+    .btn-seta:disabled {
+      opacity: 0.22;
+      cursor: default;
+    }
+
+    .indicador-passo {
+      text-align: center;
+    }
+
+    .indicador-passo span {
+      display: block;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .indicador-passo small {
+      display: block;
+      font-size: 0.65rem;
+      color: rgba(255, 255, 255, 0.45);
+      margin-top: 2px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .camera,
+      .livro-rotacao,
+      .folha,
+      .trilho-giro-container,
+      .btn-seta,
+      .tela-carregamento,
+      .foto-moldura img {
+        transition: none !important;
+        animation: none !important;
+      }
+    }
+  </style>
 </head>
 
 <body>
-
-<div class="cenario"></div>
-
-<main class="conteudo">
-  <div id="livro">
-
-    <!-- CAPA -->
-    <div class="pagina capa" data-density="hard">
-      <img
-        src="Capa.livro.png"
-        alt="Capa do Nosso Mundo Colorido"
-        draggable="false"
-      >
-    </div>
-
-    <!-- PRIMEIRA PÁGINA -->
-    <div class="pagina" data-density="soft">
-      <div class="interna">
-        <div class="estrela">✨</div>
-        <h2>Nosso mundo colorido</h2>
-        <p>
-          Um universo inteiro de lembranças
-          espera por você...
-        </p>
-      </div>
-    </div>
-
-    <!-- SEGUNDA PÁGINA -->
-    <div class="pagina" data-density="soft">
-      <div class="interna">
-        <div class="estrela">🌙</div>
-        <h2>Era uma vez...</h2>
-        <p>
-          Duas histórias que encontraram
-          uma maneira linda de se tornar uma só.
-        </p>
-      </div>
-    </div>
-
-    <!-- CONTRACAPA -->
-    <div class="pagina contracapa" data-density="hard">
-      <p>As estrelas também. ✨</p>
-    </div>
-
+  <div id="telaCarregamento" class="tela-carregamento">
+    <div class="estrela-loading">✨</div>
+    <span>Preparando nosso livro...</span>
   </div>
-</main>
 
-<script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js"></script>
+  <div class="cenario"></div>
 
-<script>
-window.addEventListener("load", function() {
+  <div class="topo-info">
+    <span class="topo-titulo">Nosso Mundo Colorido</span>
+    <span class="topo-sub" id="tituloCapitulo">Capa</span>
+  </div>
 
-  const elementoLivro = document.getElementById("livro");
+  <div class="palco" id="palco">
+    <div class="camera" id="camera">
+      <div class="livro-rotacao" id="livroRotacao">
+        <div class="lombada"></div>
 
-  if (!window.St || !window.St.PageFlip) {
-    document.body.insertAdjacentHTML(
-      "beforeend",
-      '<p style="position:fixed;bottom:15px;color:white;text-align:center;padding:10px;">Não foi possível carregar a biblioteca. Verifique sua conexão.</p>'
-    );
-    return;
-  }
+        <div class="contracapa">
+          <p>"Cada página deste livro guarda um pedacinho da nossa história e do quanto eu amo você." ✨</p>
+        </div>
 
-  // Calcula o tamanho de cada página
-  // considerando a largura e a altura da tela.
+        <div class="paginas-lateral"></div>
 
-  const margemLateral = 24;
-  const margemVertical = 150;
+        <div class="folha">
+          <div class="face frente capa-frente">
+            <img id="imgCapa" src="Capa.livro.png" alt="Capa do livro" onerror="marcarImagemComErro(this)" onload="marcarImagemCarregada(this)">
+          </div>
+          <div class="face verso">
+            <div class="sombra-dobra"></div>
+            <div class="pagina-titulo"></div>
+            <div class="pagina-texto" style="margin-top: auto; margin-bottom: auto;">
+              Este álbum pertence a você ✨<br><br>
+              Criei este cantinho especial para lembrar você de cada momento incrível que já vivemos juntas.
+            </div>
+            <div class="numero-pagina">1</div>
+          </div>
+        </div>
 
-  const larguraDisponivel =
-    (window.innerWidth - margemLateral) / 2;
+        <div class="folha">
+          <div class="face frente">
+            <div class="sombra-dobra"></div>
+            <div class="pagina-titulo">Sumário da Nossa História</div>
+            <div class="pagina-texto" style="text-align: left; padding: 0 10px;">
+              <br>
+              I. Onde tudo começou<br><br>
+              II. Nossos melhores sorrisos<br><br>
+              III. O céu daquela noite<br><br>
+              IV. Para sempre nós
+            </div>
+            <div class="numero-pagina">2</div>
+          </div>
+          <div class="face verso">
+            <div class="sombra-dobra"></div>
+            <div class="pagina-titulo">Onde Tudo Começou</div>
+            <div class="foto-moldura">
+              <img src="foto1.jpg" alt="Foto da nossa história" onerror="marcarImagemComErro(this)" onload="marcarImagemCarregada(this)">
+            </div>
+            <div class="pagina-texto">Desde o primeiro dia, você trouxe mais cor para o meu mundo.</div>
+            <div class="numero-pagina">3</div>
+          </div>
+        </div>
 
-  const alturaDisponivel =
-    (window.innerHeight - margemVertical) / 1.5;
+        <div class="folha">
+          <div class="face frente">
+            <div class="sombra-dobra"></div>
+            <div class="pagina-titulo">Para Sempre Nós ❤️</div>
+            <div class="foto-moldura">
+              <img src="foto2.jpg" alt="Outra foto nossa" onerror="marcarImagemComErro(this)" onload="marcarImagemCarregada(this)">
+            </div>
+            <div class="pagina-texto">Este livro ainda tem muitas páginas esperando pelas nossas próximas aventuras.</div>
+            <div class="numero-pagina">4</div>
+          </div>
+          <div class="face verso">
+            <div class="sombra-dobra"></div>
+            <div class="pagina-titulo"></div>
+            <div class="pagina-texto" style="margin-top: auto; margin-bottom: auto; font-size: 0.9rem;">
+              Fim... por enquanto ✨<br><br>
+              Te amo infinito!<br>♥
+            </div>
+            <div class="numero-pagina">5</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-  const larguraPagina = Math.floor(
-    Math.min(
-      360,
-      larguraDisponivel,
-      alturaDisponivel
-    )
-  );
+  <div class="area-inferior">
+    <div class="trilho-giro-container" id="trilhoGiroContainer">
+      <div class="trilho-linha" id="trilhoLinha">
+        <div class="estrela-puxador" id="estrelaPuxador" title="Arraste para girar 360°">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+          </svg>
+        </div>
+      </div>
+      <span class="legenda-estrela">arraste a estrela para girar 360°</span>
+    </div>
 
-  const alturaPagina = Math.floor(
-    larguraPagina * 1.5
-  );
+    <div class="barra-navegacao">
+      <button class="btn-seta" id="btnAnterior" aria-label="Página anterior">←</button>
+      <div class="indicador-passo">
+        <span id="textoPasso">Capa</span>
+        <small id="dicaArraste">arraste a capa para abrir</small>
+      </div>
+      <button class="btn-seta" id="btnProximo" aria-label="Próxima página">→</button>
+    </div>
+  </div>
 
-  // Define o tamanho do livro antes de inicializar.
+  <script>
+    const telaCarregamento = document.getElementById("telaCarregamento");
+    const camera = document.getElementById("camera");
+    const livroRotacao = document.getElementById("livroRotacao");
+    const imgCapa = document.getElementById("imgCapa");
+    const folhas = Array.from(document.querySelectorAll(".folha"));
+    const btnAnterior = document.getElementById("btnAnterior");
+    const btnProximo = document.getElementById("btnProximo");
+    const textoPasso = document.getElementById("textoPasso");
+    const dicaArraste = document.getElementById("dicaArraste");
+    const tituloCapitulo = document.getElementById("tituloCapitulo");
+    const trilhoGiroContainer = document.getElementById("trilhoGiroContainer");
+    const trilhoLinha = document.getElementById("trilhoLinha");
+    const estrelaPuxador = document.getElementById("estrelaPuxador");
+    const prefereMovimentoReduzido = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  elementoLivro.style.width =
-    (larguraPagina * 2) + "px";
+    function marcarImagemCarregada(img) {
+      img.classList.add("carregada");
+      if (img.parentElement) img.parentElement.classList.remove("erro-imagem");
+    }
 
-  elementoLivro.style.height =
-    alturaPagina + "px";
+    function marcarImagemComErro(img) {
+      img.classList.remove("carregada");
+      if (img.parentElement) img.parentElement.classList.add("erro-imagem");
+    }
 
-  const pageFlip = new St.PageFlip(elementoLivro, {
+    function prepararImagem(img) {
+      if (!img) return;
+      if (img.loading === "lazy") img.loading = "eager";
 
-    width: larguraPagina,
-    height: alturaPagina,
+      if (img.complete) {
+        if (img.naturalWidth > 0) marcarImagemCarregada(img);
+        else marcarImagemComErro(img);
+        return;
+      }
 
-    size: "fixed",
+      if (typeof img.decode === "function") {
+        img.decode()
+          .then(function() { marcarImagemCarregada(img); })
+          .catch(function() { marcarImagemComErro(img); });
+      } else {
+        img.addEventListener("load", function() { marcarImagemCarregada(img); }, { once: true });
+        img.addEventListener("error", function() { marcarImagemComErro(img); }, { once: true });
+      }
+    }
 
-    minWidth: larguraPagina,
-    maxWidth: larguraPagina,
+    function iniciarImagens() {
+      prepararImagem(imgCapa);
 
-    minHeight: alturaPagina,
-    maxHeight: alturaPagina,
+      let telaLiberada = false;
+      function liberarTela() {
+        if (telaLiberada) return;
+        telaLiberada = true;
+        /* Mantém a proporção 2:3 aprovada; a imagem não altera as dimensões do livro. */
+        telaCarregamento.classList.add("pronto");
+      }
 
-    autoSize: true,
+      if (imgCapa.complete) {
+        liberarTela();
+      } else {
+        imgCapa.addEventListener("load", liberarTela, { once: true });
+        imgCapa.addEventListener("error", liberarTela, { once: true });
+        window.setTimeout(liberarTela, 2500);
+      }
+    }
 
-    showCover: true,
-    usePortrait: false,
+    function preCarregarProximasPaginas(passo) {
+      const folhaBase = Math.floor(passo / 2);
+      [folhaBase, folhaBase + 1].forEach(function(idx) {
+        if (folhas[idx]) {
+          folhas[idx].querySelectorAll("img").forEach(prepararImagem);
+        }
+      });
+    }
 
-    flippingTime: 900,
+    let passoAtual = 0;
+    const totalPaginas = (folhas.length * 2) - 1;
+    let movimentoBloqueado = false;
 
-    drawShadow: true,
-    maxShadowOpacity: 0.38,
+    const nomesCapitulos = [
+      "Capa",
+      "Dedicatória",
+      "Sumário",
+      "Onde Tudo Começou",
+      "Para Sempre Nós",
+      "Fim... por enquanto"
+    ];
 
-    showPageCorners: true,
+    function bloquearTemporariamente(ms) {
+      const tempoTrava = prefereMovimentoReduzido ? 120 : ms;
+      movimentoBloqueado = true;
+      window.setTimeout(function() {
+        movimentoBloqueado = false;
+      }, tempoTrava);
+    }
 
-    mobileScrollSupport: false,
-    useMouseEvents: true,
+    function obterEnquadramento(passo) {
+      if (passo === 0) return { zoom: 1, x: 0 };
 
-    disableFlipByClick: false,
+      const isPaginaEsquerda = passo % 2 === 1;
+      if (prefereMovimentoReduzido) {
+        return { zoom: 1, x: isPaginaEsquerda ? 42 : -42 };
+      }
 
-    startPage: 0
-  });
+      const larguraTela = window.innerWidth;
+      const alturaTela = window.innerHeight;
+      const isPaisagem = larguraTela > alturaTela;
+      const isMobile = larguraTela <= 680;
 
-  pageFlip.loadFromHTML(
-    document.querySelectorAll(".pagina")
-  );
+      if (isMobile && !isPaisagem) {
+        return { zoom: 1.06, x: isPaginaEsquerda ? 45 : -45 };
+      } else if (isPaisagem && alturaTela <= 540) {
+        return { zoom: 1.03, x: isPaginaEsquerda ? 36 : -36 };
+      }
+      return { zoom: 1.12, x: isPaginaEsquerda ? 40 : -40 };
+    }
 
-});
-</script>
+    let anguloLivro360 = 0;
+    let anguloAntesEstrela = 0;
+    let arrastandoEstrela = false;
+    let ponteiroEstrela = null;
+    let larguraTrilhoCache = 0;
 
+    function aplicarGiro360(novoAngulo) {
+      anguloLivro360 = Math.max(-180, Math.min(180, novoAngulo));
+      livroRotacao.style.transform = "rotateY(" + anguloLivro360 + "deg)";
+
+      const metadeTrilho = (larguraTrilhoCache || (trilhoLinha.offsetWidth - 26)) / 2;
+      /* Usa o ângulo sem normalização para manter +180° no extremo direito do trilho. */
+      const deslocamentoEstrela = (anguloLivro360 / 180) * metadeTrilho;
+      estrelaPuxador.style.left = "calc(50% + " + deslocamentoEstrela + "px)";
+    }
+
+    function limparEstadoEstrela(restaurarPosicaoAnterior) {
+      if (!arrastandoEstrela) return;
+      arrastandoEstrela = false;
+      ponteiroEstrela = null;
+      estrelaPuxador.classList.remove("arrastando");
+      livroRotacao.classList.remove("sem-transicao");
+      if (restaurarPosicaoAnterior) aplicarGiro360(anguloAntesEstrela);
+    }
+
+    let arrastandoPagina = false;
+    let ponteiroPagina = null;
+    let inicioX = 0;
+    let ultimoClientX = 0;
+    let larguraLivroCache = 300;
+    let modoArraste = null;
+    let folhaManipulada = null;
+    let anguloFolhaAtual = 0;
+    let frameId = null;
+
+    const LIMIAR_TOQUE = 12;
+
+    function atualizarPorPosicaoNaLinha(clientX) {
+      const rect = trilhoLinha.getBoundingClientRect();
+      const centro = rect.left + rect.width / 2;
+      const metade = (rect.width - 26) / 2;
+      const delta = Math.max(-metade, Math.min(metade, clientX - centro));
+      aplicarGiro360((delta / metade) * 180);
+    }
+
+    trilhoLinha.addEventListener("pointerdown", function(e) {
+      if (passoAtual !== 0 || movimentoBloqueado || arrastandoPagina) return;
+      if (e.pointerType === "mouse" && e.button !== 0) return;
+
+      e.stopPropagation();
+      e.preventDefault();
+      arrastandoEstrela = true;
+      ponteiroEstrela = e.pointerId;
+      anguloAntesEstrela = anguloLivro360;
+      larguraTrilhoCache = trilhoLinha.offsetWidth - 26;
+      estrelaPuxador.classList.add("arrastando");
+      livroRotacao.classList.add("sem-transicao");
+      atualizarPorPosicaoNaLinha(e.clientX);
+
+      try { trilhoLinha.setPointerCapture(e.pointerId); } catch (err) {}
+    });
+
+    camera.addEventListener("pointerdown", function(e) {
+      if (e.pointerType === "mouse" && e.button !== 0) return;
+      if (arrastandoEstrela || movimentoBloqueado) return;
+
+      arrastandoPagina = true;
+      ponteiroPagina = e.pointerId;
+      inicioX = e.clientX;
+      ultimoClientX = e.clientX;
+      larguraLivroCache = camera.offsetWidth || 300;
+      modoArraste = null;
+      folhaManipulada = null;
+      anguloFolhaAtual = 0;
+
+      try { camera.setPointerCapture(e.pointerId); } catch (err) {}
+    });
+
+    function setSombraFolha(folha, angulo) {
+      if (!folha) return;
+      const sombras = folha.querySelectorAll(".sombra-dobra");
+      const intensidade = Math.sin((Math.abs(angulo) * Math.PI) / 180) * 0.78;
+      sombras.forEach(function(sombra) {
+        sombra.style.opacity = intensidade.toFixed(2);
+      });
+    }
+
+    function processarQuadroArraste() {
+      frameId = null;
+      if (!arrastandoPagina) return;
+
+      const deltaX = ultimoClientX - inicioX;
+
+      if (!modoArraste) {
+        if (Math.abs(deltaX) < LIMIAR_TOQUE) return;
+
+        camera.classList.add("arrastando");
+
+        if (deltaX < 0) {
+          if (passoAtual >= totalPaginas) return;
+
+          if (passoAtual % 2 === 0) {
+            const indiceFolha = passoAtual / 2;
+            folhaManipulada = folhas[indiceFolha];
+
+            if (folhaManipulada) {
+              modoArraste = "virar-avancar";
+              folhaManipulada.classList.add("arrastando-folha");
+              folhaManipulada.style.zIndex = 50;
+
+              if (passoAtual === 0) {
+                livroRotacao.classList.remove("sem-transicao");
+                aplicarGiro360(0);
+              }
+            }
+          } else {
+            modoArraste = "deslizar-avancar";
+          }
+        } else {
+          if (passoAtual <= 0) return;
+
+          if (passoAtual % 2 === 1) {
+            const indiceFolha = Math.floor(passoAtual / 2);
+            folhaManipulada = folhas[indiceFolha];
+
+            if (folhaManipulada) {
+              modoArraste = "virar-voltar";
+              folhaManipulada.classList.add("arrastando-folha");
+              folhaManipulada.style.zIndex = 50;
+            }
+          } else {
+            modoArraste = "deslizar-voltar";
+          }
+        }
+      }
+
+      if (!modoArraste) return;
+
+      const atual = obterEnquadramento(passoAtual);
+      const deltaUtil = deltaX < 0 ? deltaX + LIMIAR_TOQUE : deltaX - LIMIAR_TOQUE;
+
+      if (modoArraste === "virar-avancar" && folhaManipulada) {
+        const proximo = obterEnquadramento(passoAtual + 1);
+        const progresso = Math.max(0, Math.min(1, -deltaUtil / larguraLivroCache));
+        anguloFolhaAtual = -progresso * 180;
+        folhaManipulada.style.transform = "rotateY(" + anguloFolhaAtual + "deg)";
+        setSombraFolha(folhaManipulada, anguloFolhaAtual);
+
+        const zoomInterp = atual.zoom + (proximo.zoom - atual.zoom) * progresso;
+        const xInterp = atual.x + (proximo.x - atual.x) * progresso;
+        camera.style.transition = "none";
+        camera.style.transform = "translate3d(" + xInterp + "%, 0%, 0px) scale(" + zoomInterp + ")";
+      } else if (modoArraste === "virar-voltar" && folhaManipulada) {
+        const anterior = obterEnquadramento(passoAtual - 1);
+        const progresso = Math.max(0, Math.min(1, deltaUtil / larguraLivroCache));
+        anguloFolhaAtual = -180 + progresso * 180;
+        folhaManipulada.style.transform = "rotateY(" + anguloFolhaAtual + "deg)";
+        setSombraFolha(folhaManipulada, anguloFolhaAtual);
+
+        const zoomInterp = atual.zoom + (anterior.zoom - atual.zoom) * progresso;
+        const xInterp = atual.x + (anterior.x - atual.x) * progresso;
+        camera.style.transition = "none";
+        camera.style.transform = "translate3d(" + xInterp + "%, 0%, 0px) scale(" + zoomInterp + ")";
+      } else if (modoArraste === "deslizar-avancar") {
+        const proximo = obterEnquadramento(passoAtual + 1);
+        const progresso = Math.max(0, Math.min(1, -deltaUtil / larguraLivroCache));
+        const xInterp = atual.x + (proximo.x - atual.x) * progresso;
+        camera.style.transition = "none";
+        camera.style.transform = "translate3d(" + xInterp + "%, 0%, 0px) scale(" + atual.zoom + ")";
+      } else if (modoArraste === "deslizar-voltar") {
+        const anterior = obterEnquadramento(passoAtual - 1);
+        const progresso = Math.max(0, Math.min(1, deltaUtil / larguraLivroCache));
+        const xInterp = atual.x + (anterior.x - atual.x) * progresso;
+        camera.style.transition = "none";
+        camera.style.transform = "translate3d(" + xInterp + "%, 0%, 0px) scale(" + atual.zoom + ")";
+      }
+    }
+
+    window.addEventListener("pointermove", function(e) {
+      if (arrastandoEstrela && e.pointerId === ponteiroEstrela) {
+        e.preventDefault();
+        atualizarPorPosicaoNaLinha(e.clientX);
+        return;
+      }
+
+      if (!arrastandoPagina || e.pointerId !== ponteiroPagina) return;
+      e.preventDefault();
+      ultimoClientX = e.clientX;
+
+      if (frameId === null) {
+        frameId = requestAnimationFrame(processarQuadroArraste);
+      }
+    }, { passive: false });
+
+    function limparEstadoArraste() {
+      if (frameId !== null) {
+        cancelAnimationFrame(frameId);
+        frameId = null;
+      }
+
+      arrastandoPagina = false;
+      ponteiroPagina = null;
+      camera.classList.remove("arrastando");
+
+      camera.style.transition = prefereMovimentoReduzido
+        ? "none"
+        : "transform 0.55s cubic-bezier(0.22, 0.61, 0.36, 1)";
+
+      if (folhaManipulada) {
+        folhaManipulada.classList.remove("arrastando-folha");
+        setSombraFolha(folhaManipulada, 0);
+      }
+    }
+
+    function atualizarEstado() {
+      const folhasViradas = Math.ceil(passoAtual / 2);
+
+      folhas.forEach(function(folha, index) {
+        setSombraFolha(folha, 0);
+
+        if (index < folhasViradas) {
+          folha.style.transform = "rotateY(-180deg)";
+          folha.style.zIndex = index + 1;
+        } else {
+          folha.style.transform = "rotateY(0deg)";
+          /* Camadas distintas: a primeira folha ainda não virada fica por cima. */
+          folha.style.zIndex = folhas.length * 2 - index;
+        }
+      });
+
+      const enquadramento = obterEnquadramento(passoAtual);
+      camera.style.transform =
+        "translate3d(" + enquadramento.x + "%, 0%, 0px) scale(" + enquadramento.zoom + ")";
+
+      if (passoAtual === 0) {
+        textoPasso.textContent = "Capa";
+        dicaArraste.textContent = "arraste a capa para abrir";
+        trilhoGiroContainer.classList.remove("oculto");
+      } else {
+        trilhoGiroContainer.classList.add("oculto");
+        livroRotacao.classList.remove("sem-transicao");
+        aplicarGiro360(0);
+        textoPasso.textContent = passoAtual + " de " + totalPaginas;
+        dicaArraste.textContent = "arraste a página para folhear";
+      }
+
+      tituloCapitulo.textContent = nomesCapitulos[passoAtual] || "";
+      btnAnterior.disabled = passoAtual === 0;
+      btnProximo.disabled = passoAtual >= totalPaginas;
+      preCarregarProximasPaginas(passoAtual);
+    }
+
+    window.addEventListener("pointerup", function(e) {
+      if (arrastandoEstrela && e.pointerId === ponteiroEstrela) {
+        limparEstadoEstrela(false);
+        return;
+      }
+
+      if (!arrastandoPagina || e.pointerId !== ponteiroPagina) return;
+
+      if (frameId !== null) {
+        cancelAnimationFrame(frameId);
+        frameId = null;
+      }
+
+      ultimoClientX = e.clientX;
+      processarQuadroArraste();
+
+      const deltaX = ultimoClientX - inicioX;
+      const modoExecutado = modoArraste;
+      const anguloFinal = anguloFolhaAtual;
+
+      limparEstadoArraste();
+
+      if (!modoExecutado) {
+        atualizarEstado();
+        return;
+      }
+
+      let mudouPagina = false;
+
+      if (modoExecutado === "virar-avancar") {
+        if (anguloFinal < -55 && passoAtual < totalPaginas) {
+          passoAtual++;
+          mudouPagina = true;
+        }
+      } else if (modoExecutado === "virar-voltar") {
+        if (anguloFinal > -125 && passoAtual > 0) {
+          passoAtual--;
+          mudouPagina = true;
+        }
+      } else if (modoExecutado === "deslizar-avancar") {
+        if (deltaX < -45 && passoAtual < totalPaginas) {
+          passoAtual++;
+          mudouPagina = true;
+        }
+      } else if (modoExecutado === "deslizar-voltar") {
+        if (deltaX > 45 && passoAtual > 0) {
+          passoAtual--;
+          mudouPagina = true;
+        }
+      }
+
+      if (mudouPagina) bloquearTemporariamente(320);
+      atualizarEstado();
+    });
+
+    window.addEventListener("pointercancel", function(e) {
+      if (arrastandoEstrela && e.pointerId === ponteiroEstrela) {
+        limparEstadoEstrela(true);
+        return;
+      }
+
+      if (!arrastandoPagina || e.pointerId !== ponteiroPagina) return;
+      limparEstadoArraste();
+      atualizarEstado();
+    });
+
+    window.addEventListener("blur", function() {
+      limparEstadoEstrela(true);
+      if (arrastandoPagina) {
+        limparEstadoArraste();
+        atualizarEstado();
+      }
+    });
+
+    btnProximo.addEventListener("click", function(e) {
+      e.stopPropagation();
+      if (movimentoBloqueado || arrastandoPagina || arrastandoEstrela) return;
+
+      if (passoAtual < totalPaginas) {
+        passoAtual++;
+        bloquearTemporariamente(320);
+        atualizarEstado();
+      }
+    });
+
+    btnAnterior.addEventListener("click", function(e) {
+      e.stopPropagation();
+      if (movimentoBloqueado || arrastandoPagina || arrastandoEstrela) return;
+
+      if (passoAtual > 0) {
+        passoAtual--;
+        bloquearTemporariamente(320);
+        atualizarEstado();
+      }
+    });
+
+    window.addEventListener("resize", atualizarEstado);
+
+    iniciarImagens();
+    atualizarEstado();
+  </script>
 </body>
 </html>
